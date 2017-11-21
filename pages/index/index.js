@@ -4,7 +4,7 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
+    motto: '欢迎使用 嘟嘟出行',
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo')
@@ -16,6 +16,17 @@ Page({
     })
   },
   onLoad: function () {
+      wx.request({
+          url: 'https://www.forhyj.cn/miniapp/User/index', //仅为示例，并非真实的接口地址
+          data: {
+          },
+          header: {
+              'content-type': 'application/json' // 默认值
+          },
+          success: function (res) {
+              console.log(res.data)
+          }
+      })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

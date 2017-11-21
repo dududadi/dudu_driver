@@ -1,0 +1,38 @@
+<!--main.wxml-->
+<view class="content">
+  <view class="section">
+    <text class="section-title">出行服务</text>
+    <view class="clearfix">
+      <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+        <text class="iconfont icon-driver-car"></text>
+        <text>出车</text>
+      </view>
+      <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+        <text class="iconfont icon-orders"></text>
+        <text>订单记录</text>
+      </view>
+      <view class="item borderR-none" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+        <text class="iconfont icon-qianbao"></text>
+        <text>钱包</text>
+      </view>
+      <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+        <text class="iconfont icon-guide"></text>
+        <text>指南</text>
+      </view>
+      <view class="item border-none" style="width:{{itemW_2}};height:{{itemW}};line-height:{{itemH}}"></view>
+    </view>
+  </view>
+  <view class="section">
+    <text class="section-title">联系我们</text>
+    <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+      <text class="iconfont icon-kefu"></text>
+      <text>客服</text>
+    </view>
+    <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+      <text class="iconfont icon-suggest"></text>
+      <text>意见&建议</text>
+    </view>
+    <view class="item border-none" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}"></view>
+  </view>
+
+</view>
