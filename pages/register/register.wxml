@@ -1,28 +1,32 @@
 <view class="section">
     <view class="section__title">基本信息</view>
-    <input placeholder="请输入手机号" auto-focus/>
-    <input type="password" placeholder="设置密码" focus="{{focus}}" />
-    <input type="password" placeholder="再次确认密码" focus="{{focus}}" />
+    <input placeholder="请输入手机号" auto-focus bindinput='bindTel'/>
+    <input type="password" placeholder="设置密码" bindinput='bindPsw'/>
+    <input type="password" placeholder="再次确认密码" bindinput='bindCPsw'/>
 </view>
 <view class="section">
     <view class="section__title">驾驶证信息</view>
-    <input type="text" placeholder="司机姓名" focus="{{focus}}" value='司机姓名' />
-    <input type="idcard" placeholder="身份证号码" />
+    <input type="text" placeholder="司机姓名" bindinput='bindDriverName'/>
+    <input type="idcard" placeholder="身份证号码" bindinput='bindIdNum'/>
 </view>
 <view class="section datepicker">
-    <picker mode="date" value="{{getdate}}" start="1970-09-01" end="2017-11-20" bindchange="bindDateChange">
+    <picker mode="date" value="{{getDate}}" start="1970-01-01" end="{{currentDate}}" bindtap="getCurrentDate" bindchange="bindGetDateChange">
         <view class="picker">
-            初次领取驾照日期: {{getdate}}
+            初次领取驾照日期: {{getDate}}
         </view>
     </picker>
 </view>
 <view class="section">
     <view class="section__title">行驶证信息</view>
-    <input type="text" placeholder="车牌号" focus="{{focus}}" />
-    <input type="text" placeholder="车型" focus="{{focus}}" />
-    <input type="text" placeholder="车辆所有人" focus="{{focus}}" />
-    <picker mode="date" value="{{regdate}}" start="1970-01-01" end="2017-11-20" bindchange="bindDateChange">
-        <input placeholder='车辆注册信息' value='{{regdate}}' />
+    <input type="text" placeholder="车牌号" bindinput='bindCarNum' />
+    <input type="text" placeholder="车型" bindinput='bindCarType' />
+    <input type="text" placeholder="车辆所有人" bindinput='bindCarOwner' />
+</view>
+<view class="section datepicker">
+    <picker mode="date" value="{{regDate}}" start="1970-01-01" end="{{currentDate}}" bindtap="getCurrentDate" bindchange="bindRegDateChange">
+        <view class="picker">
+            车辆注册日期: {{regDate}}
+        </view>
     </picker>
 </view>
-<button>保存</button>
+<button bindtap='driverReg'>保存</button>
