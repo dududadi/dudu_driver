@@ -1,5 +1,15 @@
+var QQMapWX = require('../../js/qqmap-wx-jssdk.min.js');
+var qqMap = new QQMapWX({
+  key: 'ZNWBZ-QJMCR-BLOWX-WAK34-EFEEF-B6FCT'
+});
+const app = getApp();
 Page({
     data: {
+      region:[
+      '福建省',
+      '福州市',
+      '仓山区',
+      ],
       tel:'',
       psw:'',
       cPsw:'',
@@ -11,6 +21,121 @@ Page({
       carOwner:'',
       regDate:''
     },
+    /**
+     * 生命周期函数--监听页面加载
+     */
+    onLoad: function (options) {
+
+      var userInfo = app.globalData.userInfo;
+
+      console.log(userInfo)
+
+      var _this = this;
+
+      wx.getLocation({
+        success: function (res) {
+          qqMap.reverseGeocoder({
+            location: {
+              latitude: res.latitude,
+              longitude: res.longitude
+            },
+            success: function (res) {
+              var component = res.result.address_component;
+
+              _this.setData({
+                region: [
+                component.province,
+                component.city,
+                component.district
+                ]
+              })
+            }
+          })
+        }
+      })
+    },
+    //注册
+    // register: function () {
+    //   if (this.data.tel == '' || this.data.psw == '' || this.data.cPsw == '' || this.data.driverName == '' || this.data.idNum == '' || this.data.getDate == '' || this.data.carNum == '' || this.data.carType == '' || this.data.carOwner == '' || this.data.regDate == '') {
+    //     wx.showModal({
+    //       title: '请检查输入',
+    //       content: '部分输入有误，请重新再试'
+    //     })
+    //   } else if (this.data.psw != this.data.cPsw) {
+    //     wx.showModal({
+    //       title: '密码输入有误',
+    //       content: '两次密码输入不一致，请重新再试'
+    //     })
+    //   } else {
+    //     var userInfo = app.globalData.userInfo;
+
+    //     var data = {
+    //       province:this.region[0],
+    //       city: this.region[1],
+    //       area: this.region[2],
+    //       tel: this.data.tel,
+    //       psw: this.data.psw,
+    //       cPsw: this.data.cPsw,
+    //       driverName: this.data.driverName,
+    //       idNum: this.data.idNum,
+    //       getDate: this.data.getDate,
+    //       carNum: this.data.carNum,
+    //       carType: this.data.carType,
+    //       carOwner: this.data.carOwner,
+    //       regDate: this.data.regDate,
+    //       openid: wx.getStorageSync('openid'),
+    //       headImg: userInfo.avatarUrl,
+    //       nickname: userInfo.nickName
+    //     }
+
+    //     wx.request({
+    //       url: "https://www.forhyj.cn/miniapp/Driver/register",
+    //       method: "POST",
+    //       data: data,
+    //       success: function (res) {
+    //         var data = res.data;
+
+    //         if (data == 0) {
+    //           wx.showModal({
+    //             title: '电话号码有误',
+    //             content: '电话号码格式不对，请重新再试'
+    //           })
+    //         } else if (data == 1) {
+    //           wx.showModal({
+    //             title: '密码有误',
+    //             content: '密码格式不对，请重新再试'
+    //           })
+    //         } else if (data == 2) {
+    //           wx.showModal({
+    //             title: '身份证有误',
+    //             content: '身份证号码格式不对，请重新再试'
+    //           })
+    //         } else if (data == 3) {
+    //           wx.showModal({
+    //             title: '该手机号已注册',
+    //             content: '请更换手机号后再试'
+    //           })
+    //         } else if (data == 4) {
+    //           wx.showModal({
+    //             title: '注册成功',
+    //             content: '恭喜您注册成功',
+    //             success: function (res) {
+    //               wx.redirectTo({
+    //                 url: '../index/index',
+    //               })
+    //             }
+    //           })
+    //         } else if (res == 5) {
+    //           wx.showModal({
+    //             title: '未知错误',
+    //             content: '请联系管理员'
+    //           })
+    //         }
+    //       }
+    //     })
+    //   }
+    // },
+
     bindTel: function (e) {
       this.setData({
         tel: e.detail.value
@@ -36,7 +161,6 @@ Page({
         idNum: e.detail.value
       })
     },
-   
     bindCarNum: function (e) { 
       this.setData({
         carNum: e.detail.value
@@ -77,8 +201,7 @@ Page({
         regDate: e.detail.value
       })
     },
-
-
+    
 
 
 
