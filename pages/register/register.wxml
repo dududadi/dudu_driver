@@ -3,14 +3,21 @@
     <input placeholder="请输入手机号" auto-focus bindinput='bindTel'/>
     <input type="password" placeholder="设置密码" bindinput='bindPsw' maxlength='16'/>
     <input type="password" placeholder="再次确认密码" bindinput='bindCPsw' maxlength='16'/>
-
     <view class="section datepicker">
-    <picker class='body' mode="region" bindchange="bindRegionChange" custom-item="{{customItem}}" value='{{region}}'>
-        <view class="picker">
-            地区选择：{{region[0]}} {{region[1]}} {{region[2]}}
-        </view>
-    </picker>
-</view>
+      <picker class='body' mode="region" bindchange="bindRegionChange" custom-item="{{customItem}}" value='{{region}}'>
+          <view class="picker">
+              地区选择：{{region[0]}} {{region[1]}} {{region[2]}}
+          </view>
+      </picker>
+    </view> 
+     <input placeholder="请输入详细地址" bindinput='bindAddress'/>
+    <view class="section datepicker">
+        <picker mode="selector" bindchange="bindBtNameChange" value="{{btNameIndex}}" range="{{btNameArray}}">
+          <view class="picker">
+            请选择运营类型：{{btNameArray[btNameIndex]}}
+          </view>
+        </picker>
+    </view>
 </view>
 
 <view class="section">

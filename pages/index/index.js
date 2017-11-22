@@ -12,21 +12,22 @@ Page({
   //事件处理函数
   bindViewTap: function() {
     wx.navigateTo({
-      url: '../logs/logs'
+      url: '../register/register'
     })
   },
   onLoad: function () {
-      wx.request({
-          url: 'https://www.forhyj.cn/miniapp/User/index', //仅为示例，并非真实的接口地址
-          data: {
-          },
-          header: {
-              'content-type': 'application/json' // 默认值
-          },
-          success: function (res) {
-              console.log(res.data)
-          }
-      })
+    this.getUserInfo;
+      // wx.request({
+      //     url: 'https://www.forhyj.cn/miniapp/Driver/index', //仅为示例，并非真实的接口地址
+      //     data: {
+      //     },
+      //     header: {
+      //         'content-type': 'application/json' // 默认值
+      //     },
+      //     success: function (res) {
+      //         console.log(res.data)
+      //     }
+      // })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -53,6 +54,59 @@ Page({
         }
       })
     }
+  },
+  onReady: function () {
+    wx.login({
+      success: function (res) {
+        if (res.code) {
+          //发起网络请求
+          wx.request({
+            url: 'https://www.forhyj.cn/miniapp/Driver/getOpenId',
+            method: 'POST',
+            data: {
+              code: res.code
+            },
+            success: function (res) {
+              var data = res.data;
+              console.log(data);
+              wx.setStorageSync('loginSessionKey', data.session_key);
+              wx.setStorageSync('openid', data.open_id);
+
+              if (data.status == 'success') {
+                setTimeout(function () {
+                  wx.redirectTo({
+                    url: '../main/main',
+                  })
+                }, 1000);
+              } else if (data.status == 'fail') {
+                wx.showModal({
+                  title: '您尚未注册',
+                  content: '是否需要前往注册页面',
+                  success: function (res) {
+                    if (res.confirm) {
+                      wx.redirectTo({
+                        url: '../register/register',
+                      })
+                    } else {
+                      wx.navigateBack({
+
+                      })
+                    }
+                  }
+                })
+
+
+              } else {
+                console.log('something fail');
+                
+              }
+            }
+          })
+        } else {
+          console.log('获取用户登录态失败！' + res.errMsg)
+        }
+      }
+    });
   },
   getUserInfo: function(e) {
     console.log(e)

@@ -19,7 +19,11 @@ Page({
       carNum:'',
       carType:'',
       carOwner:'',
-      regDate:''
+      regDate:'',
+      address:'',
+      btNameIndex:0,//默认选中第几项
+      btNameArray:'',
+      btName:'出租车'
     },
     /**
      * 生命周期函数--监听页面加载
@@ -31,6 +35,17 @@ Page({
       //console.log(userInfo)
 
       var _this = this;
+      wx.request({
+        url: "https://www.forhyj.cn/miniapp/Driver/getBtName",
+        method: "POST",
+        data: '',
+        success: function (res) {
+          //console.log(res);
+          _this.setData({ 
+            btNameArray:res.data
+          });
+        }
+      });
 
       wx.getLocation({
         success: function (res) {
@@ -56,7 +71,6 @@ Page({
     },
     //注册
     driverReg: function () {
-      console.log(this.data);
       if (this.data.tel == '' || this.data.psw == '' || this.data.cPsw == '' || this.data.driverName == '' || this.data.idNum == '' || this.data.getDate == '' || this.data.carNum == '' || this.data.carType == '' || this.data.carOwner == '' || this.data.regDate == '') {
         wx.showModal({
           title: '请检查输入',
@@ -86,108 +100,129 @@ Page({
           regDate: this.data.regDate,
           openid: wx.getStorageSync('openid'),
           headImg: userInfo.avatarUrl,
-          nickname: userInfo.nickName
+          address: this.data.address,
+          btName: this.data.btName
         }
+        console.log(data);
+        // wx.request({
+        //   url: "https://www.forhyj.cn/miniapp/Driver/register",
+        //   method: "POST",
+        //   data: data,
+        //   success: function (res) {
+        //     var data = res.data;
 
-        wx.request({
-          url: "https://www.forhyj.cn/miniapp/Driver/register",
-          method: "POST",
-          data: data,
-          success: function (res) {
-            var data = res.data;
-
-            if (data == 0) {
-              wx.showModal({
-                title: '基本信息有误',
-                content: '手机号码格式不对，请重新再试'
-              })
-            } else if (data == 1) {
-              wx.showModal({
-                title: '基本信息有误',
-                content: '手机号码已注册，请更换'
-              })
-            } else if (data == 2) {
-              wx.showModal({
-                title: '基本信息有误',
-                content: '请输入6至16位英文或数字，请重新输入'
-              })
-            } else if (data == 3) {
-              wx.showModal({
-                title: '基本信息有误',
-                content: '两次输入密码不一致，请重新输入'
-              })
-            } else if (data == 4) {
-              wx.showModal({
-                title: '驾驶证信息有误',
-                content: '请输入正确人名',
-                success: function (res) {
-                  wx.redirectTo({
-                    url: '../index/index',
-                  })
-                }
-              })
-            } else if (data == 5) {
-              wx.showModal({
-                title: '驾驶证信息有误',
-                content: '身份证格式有误，请重新输入',
-                success: function (res) {
-                  wx.redirectTo({
-                    url: '../index/index',
-                  })
-                }
-              })
-            } else if (data == 6) {
-              wx.showModal({
-                title: '驾驶证信息有误',
-                content: '您的驾龄不足3年，不满足注册条件',
-                success: function (res) {
-                  wx.redirectTo({
-                    url: '../index/index',
-                  })
-                }
-              })
-            } else if (data == 7) {
-              wx.showModal({
-                title: '行驶证信息有误',
-                content: '您的车牌号不满足格式，请输入正确车牌号',
-                success: function (res) {
-                  wx.redirectTo({
-                    url: '../index/index',
-                  })
-                }
-              })
-            } else if (data == 8) {
-              wx.showModal({
-                title: '行驶证信息有误',
-                content: '车辆拥有人姓名，请输入正确人名',
-                success: function (res) {
-                  wx.redirectTo({
-                    url: '../index/index',
-                  })
-                }
-              })
-            } 
-            else if (data == 9) {
-              wx.showModal({
-                title: '行驶证信息有误',
-                content: '您的车辆行驶超过8年，请更换车辆',
-                success: function (res) {
-                  wx.redirectTo({
-                    url: '../index/index',
-                  })
-                }
-              })
-            }else if (res == 10) {
-              wx.showModal({
-                title: '未知错误',
-                content: '请联系管理员'
-              })
-            }
-          }
-        })
+        //     if (data == 0) {
+        //       wx.showModal({
+        //         title: '基本信息有误',
+        //         content: '手机号码格式不对，请重新再试'
+        //       })
+        //     } else if (data == 1) {
+        //       wx.showModal({
+        //         title: '基本信息有误',
+        //         content: '手机号码已注册，请更换'
+        //       })
+        //     } else if (data == 2) {
+        //       wx.showModal({
+        //         title: '基本信息有误',
+        //         content: '请输入6至16位英文或数字，请重新输入'
+        //       })
+        //     } else if (data == 3) {
+        //       wx.showModal({
+        //         title: '基本信息有误',
+        //         content: '两次输入密码不一致，请重新输入'
+        //       })
+        //     } else if (data == 4) {
+        //       wx.showModal({
+        //         title: '驾驶证信息有误',
+        //         content: '请输入正确人名',
+        //         success: function (res) {
+        //           wx.redirectTo({
+        //             url: '../index/index',
+        //           })
+        //         }
+        //       })
+        //     } else if (data == 5) {
+        //       wx.showModal({
+        //         title: '驾驶证信息有误',
+        //         content: '身份证格式有误，请重新输入',
+        //         success: function (res) {
+        //           wx.redirectTo({
+        //             url: '../index/index',
+        //           })
+        //         }
+        //       })
+        //     } else if (data == 6) {
+        //       wx.showModal({
+        //         title: '驾驶证信息有误',
+        //         content: '您的驾龄不足3年，不满足注册条件',
+        //         success: function (res) {
+        //           wx.redirectTo({
+        //             url: '../index/index',
+        //           })
+        //         }
+        //       })
+        //     } else if (data == 7) {
+        //       wx.showModal({
+        //         title: '行驶证信息有误',
+        //         content: '您的车牌号不满足格式，请输入正确车牌号',
+        //         success: function (res) {
+        //           wx.redirectTo({
+        //             url: '../index/index',
+        //           })
+        //         }
+        //       })
+        //     } else if (data == 8) {
+        //       wx.showModal({
+        //         title: '行驶证信息有误',
+        //         content: '车辆拥有人姓名，请输入正确人名',
+        //         success: function (res) {
+        //           wx.redirectTo({
+        //             url: '../index/index',
+        //           })
+        //         }
+        //       })
+        //     } 
+        //     else if (data == 9) {
+        //       wx.showModal({
+        //         title: '行驶证信息有误',
+        //         content: '您的车辆行驶超过8年，请更换车辆',
+        //         success: function (res) {
+        //           wx.redirectTo({
+        //             url: '../index/index',
+        //           })
+        //         }
+        //       })
+        //     }else if (res == 10) {
+        //       wx.showModal({
+        //         title: '注册失败',
+        //         content: '请重试'
+        //       })
+        //     }
+        //     else if (res == 11) {
+        //       wx.showModal({
+        //         title: '未知错误',
+        //         content: '请联系管理员'
+        //       })
+        //     }
+        //   }
+        // })
       }
     },
-
+    bindBtNameChange:function(e){
+      var _this = this;
+      console.log('picker发送选择改变bindBtNameChange，携带值为', e.detail.value);
+      this.setData({ 
+        btNameIndex: e.detail.value,
+        btName: _this.data.btNameArray[e.detail.value]
+      });
+      console.log(this.data.btNameIndex);
+      console.log(this.data.btName);
+    },
+    bindAddress: function (e) {
+      this.setData({
+        address: e.detail.value
+      })
+    },
     bindTel: function (e) {
       this.setData({
         tel: e.detail.value
