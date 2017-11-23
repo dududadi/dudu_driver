@@ -103,109 +103,109 @@ Page({
           address: this.data.address,
           btName: this.data.btName
         }
-        console.log(data);
-        // wx.request({
-        //   url: "https://www.forhyj.cn/miniapp/Driver/register",
-        //   method: "POST",
-        //   data: data,
-        //   success: function (res) {
-        //     var data = res.data;
+        //console.log(data);
+        wx.request({
+          url: "https://www.forhyj.cn/miniapp/Driver/register",
+          method: "POST",
+          data: data,
+          success: function (res) {
+            var data = res.data;
 
-        //     if (data == 0) {
-        //       wx.showModal({
-        //         title: '基本信息有误',
-        //         content: '手机号码格式不对，请重新再试'
-        //       })
-        //     } else if (data == 1) {
-        //       wx.showModal({
-        //         title: '基本信息有误',
-        //         content: '手机号码已注册，请更换'
-        //       })
-        //     } else if (data == 2) {
-        //       wx.showModal({
-        //         title: '基本信息有误',
-        //         content: '请输入6至16位英文或数字，请重新输入'
-        //       })
-        //     } else if (data == 3) {
-        //       wx.showModal({
-        //         title: '基本信息有误',
-        //         content: '两次输入密码不一致，请重新输入'
-        //       })
-        //     } else if (data == 4) {
-        //       wx.showModal({
-        //         title: '驾驶证信息有误',
-        //         content: '请输入正确人名',
-        //         success: function (res) {
-        //           wx.redirectTo({
-        //             url: '../index/index',
-        //           })
-        //         }
-        //       })
-        //     } else if (data == 5) {
-        //       wx.showModal({
-        //         title: '驾驶证信息有误',
-        //         content: '身份证格式有误，请重新输入',
-        //         success: function (res) {
-        //           wx.redirectTo({
-        //             url: '../index/index',
-        //           })
-        //         }
-        //       })
-        //     } else if (data == 6) {
-        //       wx.showModal({
-        //         title: '驾驶证信息有误',
-        //         content: '您的驾龄不足3年，不满足注册条件',
-        //         success: function (res) {
-        //           wx.redirectTo({
-        //             url: '../index/index',
-        //           })
-        //         }
-        //       })
-        //     } else if (data == 7) {
-        //       wx.showModal({
-        //         title: '行驶证信息有误',
-        //         content: '您的车牌号不满足格式，请输入正确车牌号',
-        //         success: function (res) {
-        //           wx.redirectTo({
-        //             url: '../index/index',
-        //           })
-        //         }
-        //       })
-        //     } else if (data == 8) {
-        //       wx.showModal({
-        //         title: '行驶证信息有误',
-        //         content: '车辆拥有人姓名，请输入正确人名',
-        //         success: function (res) {
-        //           wx.redirectTo({
-        //             url: '../index/index',
-        //           })
-        //         }
-        //       })
-        //     } 
-        //     else if (data == 9) {
-        //       wx.showModal({
-        //         title: '行驶证信息有误',
-        //         content: '您的车辆行驶超过8年，请更换车辆',
-        //         success: function (res) {
-        //           wx.redirectTo({
-        //             url: '../index/index',
-        //           })
-        //         }
-        //       })
-        //     }else if (res == 10) {
-        //       wx.showModal({
-        //         title: '注册失败',
-        //         content: '请重试'
-        //       })
-        //     }
-        //     else if (res == 11) {
-        //       wx.showModal({
-        //         title: '未知错误',
-        //         content: '请联系管理员'
-        //       })
-        //     }
-        //   }
-        // })
+            if (data == 0) {
+              wx.showModal({
+                title: '基本信息有误',
+                content: '手机号码格式不对，请重新再试'
+              })
+            } else if (data == 1) {
+              wx.showModal({
+                title: '基本信息有误',
+                content: '手机号码已注册，请更换'
+              })
+            } else if (data == 2) {
+              wx.showModal({
+                title: '基本信息有误',
+                content: '请输入6至16位英文或数字，请重新输入'
+              })
+            } else if (data == 3) {
+              wx.showModal({
+                title: '基本信息有误',
+                content: '两次输入密码不一致，请重新输入'
+              })
+            } else if (data == 4) {
+              wx.showModal({
+                title: '驾驶证信息有误',
+                content: '请输入正确人名',
+                success: function (res) {
+                  wx.redirectTo({
+                    url: '../index/index',
+                  })
+                }
+              })
+            } else if (data == 5) {
+              wx.showModal({
+                title: '驾驶证信息有误',
+                content: '身份证格式有误，请重新输入',
+                success: function (res) {
+                  wx.redirectTo({
+                    url: '../index/index',
+                  })
+                }
+              })
+            } else if (data == 6) {
+              wx.showModal({
+                title: '驾驶证信息有误',
+                content: '您的驾龄不足3年，不满足注册条件',
+                success: function (res) {
+                  wx.redirectTo({
+                    url: '../index/index',
+                  })
+                }
+              })
+            } else if (data == 7) {
+              wx.showModal({
+                title: '行驶证信息有误',
+                content: '您的车牌号不满足格式，请输入正确车牌号',
+                success: function (res) {
+                  wx.redirectTo({
+                    url: '../index/index',
+                  })
+                }
+              })
+            } else if (data == 8) {
+              wx.showModal({
+                title: '行驶证信息有误',
+                content: '车辆拥有人姓名，请输入正确人名',
+                success: function (res) {
+                  wx.redirectTo({
+                    url: '../index/index',
+                  })
+                }
+              })
+            } 
+            else if (data == 9) {
+              wx.showModal({
+                title: '行驶证信息有误',
+                content: '您的车辆行驶超过8年，请更换车辆',
+                success: function (res) {
+                  wx.redirectTo({
+                    url: '../index/index',
+                  })
+                }
+              })
+            }else if (res == 10) {
+              wx.showModal({
+                title: '注册失败',
+                content: '请重试'
+              })
+            }
+            else if (res == 11) {
+              wx.showModal({
+                title: '未知错误',
+                content: '请联系管理员'
+              })
+            }
+          }
+        })
       }
     },
     bindBtNameChange:function(e){
