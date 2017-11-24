@@ -77,5 +77,13 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  //出车
+  doReceive: function () {
+    var openID = wx.getStorageSync('openid');
+    wx.redirectTo({
+        url: '/pages/receive_order/receive_order?openid='+openID
+    });
   }
 })

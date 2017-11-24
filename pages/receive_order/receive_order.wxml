@@ -1,0 +1,24 @@
+<!--receive_order.wxml-->
+<view class="content" style="height:504px">
+  <view class="content-top">
+    <view>今日已接订单 <text>XXX</text></view>
+    <button class="refresh-btn">刷新订单信息</button>
+  </view>
+  <view class="content-bottom">
+      <view class="section">
+        <view class="section-content">
+          <block wx:for="{{orderList}}" wx:for-index="idx" wx:for-item="item">
+            <view class="border-gray">
+              <view class="site-info">
+                <view class="start-site">{{item.sSite}}</view>
+                <view class="divide">  -  </view>
+                <view class="end-site">{{item.eSite}}</view>
+              </view>
+              <view class="distance">{{item.distance}} km</view>
+              <button class="receive-order" catchtap="receiveOrder" data-user="user">接单</button>
+            </view>
+          </block>
+        </view>
+      </view>
+  </view>
+</view>

@@ -3,7 +3,7 @@
   <view class="section">
     <text class="section-title">出行服务</text>
     <view class="clearfix">
-      <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+      <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}" catchtap="doReceive">
         <text class="iconfont icon-driver-car"></text>
         <text>出车</text>
       </view>

@@ -1,0 +1,54 @@
+/**go.wxss**/
+page,#page{
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.divide{
+  padding:0 5px;
+}
+.mpas{
+  position:absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+}
+.map_container,map{
+  width: 100%;
+  height: 100%;
+
+}
+.btns{
+  position: absolute;
+  height: 50px;
+  width: 60%;
+  text-align: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  padding-top: 10px;
+}
+.receive-now{
+  padding: 10px 6px;
+  background-color: #E67F02;
+  color: #fff;
+  border-radius: 25px;
+  font-size: 18px;
+  height: 24px;
+  width: 80%;
+  line-height: 24px;
+}
+.cancel-btn{
+  position: absolute;
+  width: 38%;
+  padding: 5px 0;
+  font-size: 16px;
+  background-color: #fff;
+  border-radius: 25px;
+  border: 1px solid #E67F02;
+  right: -30%;
+  top: 15px;
+  line-height: 25px;
+}
