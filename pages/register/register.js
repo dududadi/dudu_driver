@@ -212,6 +212,11 @@ Page({
         cPsw: e.detail.value
       })
     },
+    bindRegionChange: function (e) {
+      this.setData({
+        region: e.detail.value
+      })
+    },
     bindDriverName: function (e) {
       this.setData({
         driverName: e.detail.value

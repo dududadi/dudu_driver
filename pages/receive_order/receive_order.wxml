@@ -7,8 +7,7 @@
   <view class="content-bottom">
       <view class="section">
         <view class="section-content">
-          <block wx:for="{{orderList}}" wx:for-index="idx" wx:for-item="item">
-            <view class="border-gray">
+            <view class="border-gray" wx:for="{{orderList}}" wx:for-index="idx" wx:for-item="item">
               <view class="site-info">
                 <view class="start-site">{{item.sSite}}</view>
                 <view class="divide">  -  </view>
@@ -17,7 +16,6 @@
               <view class="distance">{{item.distance}} km</view>
               <button class="receive-order" catchtap="receiveOrder" data-user="user">接单</button>
             </view>
-          </block>
         </view>
       </view>
   </view>

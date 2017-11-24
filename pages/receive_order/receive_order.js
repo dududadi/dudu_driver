@@ -34,6 +34,14 @@ Page({
           eSite: '终点',
           distance: 6.66
         }
+      ],
+      array: [
+        {
+          message: 'foo',
+        },
+        {
+          message: 'bar'
+        }
       ]
     },
 
@@ -57,7 +65,7 @@ Page({
         fail: function () {
         }
       });
-      //this.getOrders();
+      this.getOrders();
     },
 
     /**
@@ -97,7 +105,7 @@ Page({
     },
 
     /**
-     * 页面相关事件处理函数--监听用户下拉动作
+     * 页面相关事件处理函数--监听用-户下拉动作
      */
     onPullDownRefresh: function () {
 
@@ -146,11 +154,17 @@ Page({
     getOrders: function () {
       var _this = this;
       wx.request({
-        url: 'https://www.forhyj.cn/Driver/xxx',
+        url: 'https://www.forhyj.cn/miniapp/Driver/getOrderList',
         data: {openid:_this.data.openid},
         success: function (res) {
-          console.log("success");
           console.log(res);
+          console.log(_this.data.orderList);
+          _this.data.array = [{
+            sSite: '起点',
+            eSite: '终点',
+            distance: 11.20
+          }];
+          console.log(_this.data.orderList);
         },
         fail: function (err) {
           console.log(err);
