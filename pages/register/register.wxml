@@ -45,4 +45,4 @@
         </view>
     </picker>
 </view>
-<button bindtap='driverReg'>保存</button>
+<button bindtap='driverReg'>注册</button>

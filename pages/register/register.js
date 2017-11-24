@@ -194,8 +194,8 @@ Page({
               })
             }else if (res == 10) {
               wx.showModal({
-                title: '注册失败',
-                content: '请重试'
+                title: '注册成功',
+                content: '欢迎加入嘟嘟王国'
               })
             }
             else if (res == 11) {
