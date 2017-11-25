@@ -20,13 +20,13 @@ Page({
         var key = config.Config.key;
         var myAmapFun = new amapFile.AMapWX({key: key});
         myAmapFun.getRegeo({
-          iconPath: "../../img/marker.png",
+          iconPath: "../../img/marker_checked.png",
           iconWidth: 22,
           iconHeight: 32,
           success: function(data){
             var marker = [{
               id: data[0].id,
-              latitude: 26.068886, //26.070351, 
+              latitude: 26.068886, //26.070351,
               longitude: 119.29645, //119.29637,
               iconPath: data[0].iconPath,
               width: data[0].width,

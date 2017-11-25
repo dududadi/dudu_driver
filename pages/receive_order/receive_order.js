@@ -10,28 +10,38 @@ Page({
       longitude: '',
       orderList:[
         {
-          sSite: '起点',
-          eSite: '终点',
-          distance: 11.20
+          open_id: 'o7r8T0XJAc4FSyQjVK_VJ-FhGppY', //乘客open_id
+          oh_create_time: '2017-11-25 10:09:18', //下单时间
+          oh_start_name: '起点', //乘车起点
+          oh_start_longitude: "119.261", //起点经度
+          oh_start_latitude: "26.0778", //起点纬度
+          oh_end_name: '终点', //乘车终点
+          oh_end_longitude: "119.231", //终点经度
+          oh_end_latitude: "26.0773", //终点纬度
+          distance: 11.20 //两地路程距离
         },
         {
-          sSite: '起点',
-          eSite: '终点',
+          open_id: 2,
+          oh_start_name: '起点',
+          oh_end_name: '终点',
           distance: 9.05
         },
         {
-          sSite: '起点',
-          eSite: '终点',
+          open_id: 3,
+          oh_start_name: '起点',
+          oh_end_name: '终点',
           distance: 24.00
         },
         {
-          sSite: '起点',
-          eSite: '终点',
+          open_id: 4,
+          oh_start_name: '起点',
+          oh_end_name: '终点',
           distance: 5.29
         },
         {
-          sSite: '起点',
-          eSite: '终点',
+          open_id: 5,
+          oh_start_name: '起点',
+          oh_end_name: '终点',
           distance: 6.66
         }
       ],
@@ -49,18 +59,17 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-      console.log(options);
       this.data.openid = options.openid;
       var _this = this;
       wx.getLocation({
         type: 'gcj02',
         success: function (res) {
-          console.log(res);
+          //console.log(res);
           var latitude = res.latitude;
           var longitude = res.longitude;
           _this.data.latitude = latitude;
           _this.data.longitude = longitude;
-          _this.getOrdersDes(longitude,latitude);
+          //_this.getOrdersDes(longitude,latitude);
         },
         fail: function () {
         }
@@ -146,7 +155,7 @@ Page({
       var _this = this;
       var dataObj = e.target.dataset;
       wx.redirectTo({
-        url: '/pages/go/go?openid=' + _this.data.openid
+        url: '/pages/go/go?openid=' + _this.data.openid //进入接单页面
       });
     },
 
@@ -155,15 +164,13 @@ Page({
       var _this = this;
       wx.request({
         url: 'https://www.forhyj.cn/miniapp/Driver/getOrderList',
+        method: 'POST',
         data: {openid:_this.data.openid},
         success: function (res) {
-          console.log(res);
-          console.log(_this.data.orderList);
-          _this.data.array = [{
-            sSite: '起点',
-            eSite: '终点',
-            distance: 11.20
-          }];
+          var data = res.data;
+          _this.setData({
+            orderList: data
+          });
           console.log(_this.data.orderList);
         },
         fail: function (err) {
