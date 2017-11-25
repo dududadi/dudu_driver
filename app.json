@@ -2,8 +2,10 @@
   "pages":[
     "pages/index/index",
     "pages/register/register",
-    "pages/logs/logs",
-    "pages/main/main"
+    "pages/main/main",
+    "pages/receive_order/receive_order",
+    "pages/go/go",
+    "pages/logs/logs"
   ],
   "window":{
     "backgroundTextStyle":"light",

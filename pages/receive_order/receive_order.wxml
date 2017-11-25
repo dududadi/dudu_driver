@@ -2,19 +2,19 @@
 <view class="content" style="height:504px">
   <view class="content-top">
     <view>今日已接订单 <text>XXX</text></view>
-    <button class="refresh-btn">刷新订单信息</button>
+    <button class="refresh-btn"catchtap="getOrders">刷新订单信息</button>
   </view>
   <view class="content-bottom">
       <view class="section">
         <view class="section-content">
-            <view class="border-gray" wx:for="{{orderList}}" wx:for-index="idx" wx:for-item="item">
+            <view class="border-gray" wx:for="{{orderList}}" wx:for-index="idx" wx:for-item="item" wx:key="item.id">
               <view class="site-info">
-                <view class="start-site">{{item.sSite}}</view>
+                <view class="start-site">{{item.oh_start_name}}</view>
                 <view class="divide">  -  </view>
-                <view class="end-site">{{item.eSite}}</view>
+                <view class="end-site">{{item.oh_end_name}}</view>
               </view>
               <view class="distance">{{item.distance}} km</view>
-              <button class="receive-order" catchtap="receiveOrder" data-user="user">接单</button>
+              <button class="receive-order" catchtap="receiveOrder" data-user="{{item.open_id}}" data-time="{{item.oh_create_time}}" data-sSiteLongitude="{{oh_start_longitude}}" data-sSiteLatitude="{{oh_start_latitude}}" data-eSiteLongitude="{{oh_start_longitude}}" data-eSiteLatitude="{{oh_start_latitude}}">接单</button>
             </view>
         </view>
       </view>
