@@ -2,17 +2,10 @@
   "pages":[
     "pages/index/index",
     "pages/register/register",
-<<<<<<< HEAD
     "pages/logs/logs",
     "pages/main/main",
     "pages/go/go",
     "pages/receive_order/receive_order"
-=======
-    "pages/main/main",
-    "pages/receive_order/receive_order",
-    "pages/go/go",
-    "pages/logs/logs"
->>>>>>> e9f510edd49dd649f34f333642f450f79e00d77a
   ],
   "window":{
     "backgroundTextStyle":"light",
