@@ -60,10 +60,16 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+      var _this = this;
       this.setData({
         driver_open_id: options.openid, //司机open_id
         longitude: options.longitude,
         latitude: options.latitude
+      });
+
+      this.getOrders();
+      this.setData({
+        itv: setInterval(_this.getOrders, 5000)
       });
     },
 
@@ -79,10 +85,6 @@ Page({
               //console.log(res.windowWidth);
               //console.log(res.windowHeight);
           }
-      });
-      this.getOrders();
-      this.setData({
-        itv: setInterval(_this.getOrders, 5000)
       });
     },
 
@@ -128,9 +130,30 @@ Page({
 
     },
 
+    //获取当前司机位置
+    getDriverPos: function () {
+      var _this = this;
+      wx.getLocation({
+        type: 'gcj02',
+        success: function (res) {
+          //console.log(res);
+          var latitude = res.latitude;
+          var longitude = res.longitude;
+          _this.setData({
+              latitude: latitude,
+              longitude: longitude
+           });
+        },
+        fail: function () {
+
+        }
+      })
+    },
+
     //司机接单事件
     receiveOrder: function (e) {
       var _this = this;
+      this.getDriverPos();
       var data = e.target.dataset;
       var openid = data.user; //用户open_id
       var time = data.time; //订单生成时间
@@ -140,14 +163,19 @@ Page({
       var eLatitude = data.esitelatitude; //终点纬度
       var timeInterval = parseInt(new Date().getTime()/1000 - (new Date(time).getTime()/1000));
       console.log(timeInterval);
-      if(timeInterval <= 180000000000) {
+      if(timeInterval <= 180) {
         wx.showLoading({
           title: '加载中...',
         });
         wx.request({
           url: 'https://www.forhyj.cn/miniapp/Driver/receiveOrder',
           method: 'POST',
-          data: { openid: openid},
+          data: {
+            openid: openid,
+            driverOpenId: _this.data.driver_open_id,
+            longitude: _this.data.longitude,
+            latitude: _this.data.latitude
+            },
           success: function (res) {
             console.log(res);
             res = res.data.trim();
@@ -161,8 +189,8 @@ Page({
               wx.redirectTo({
                 url: '/pages/go/go?openid=' + openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude, //进入接单页面
                 success: function () {
-                  this.setData({
-                    itv: clearInterval(this.data.itv)
+                  _this.setData({
+                    itv: clearInterval(_this.data.itv)
                   });
                   wx.hideLoading();
                 }
@@ -179,21 +207,7 @@ Page({
     //获取订单信息
     getOrders: function () {
       var _this = this;
-      wx.getLocation({
-        type: 'gcj02',
-        success: function (res) {
-          //console.log(res);
-          var latitude = res.latitude;
-          var longitude = res.longitude;
-          _this.setData({
-              latitude: latitude,
-              longitude: longitude
-           });
-        },
-        fail: function () {
-
-        }
-      });
+      this.getDriverPos();
       wx.request({
         url: 'https://www.forhyj.cn/miniapp/Driver/getOrderList',
         method: 'POST',
