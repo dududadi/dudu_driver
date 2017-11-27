@@ -208,7 +208,7 @@ Page({
               orderList: data
            });
           console.log(_this.data.orderList);
-          console.log(_this.data.longitude_this.data.latitude,);
+          console.log(_this.data.longitude,_this.data.latitude);
         },
         fail: function (err) {
           console.log(err);
