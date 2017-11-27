@@ -7,7 +7,8 @@ Page({
    */
   data: {
     latitude: '',
-    longitude: ''
+    longitude: '',
+    status: true
   },
 
   /**
@@ -25,7 +26,7 @@ Page({
           _this.data.longitude = longitude;
         },
         fail: function () {
-          
+
         }
       });
   },
@@ -49,6 +50,21 @@ Page({
         });
       }
     });
+    /*wx.request({
+      url: 'https://www.forhyj.cn/miniapp/Driver/XXX',
+          method: 'POST',
+          success: function (res) {
+            if (res.data) {
+              //审核已通过
+              _this.setData({
+                status: true
+              });
+            }
+          },
+          fail: function (err) {
+            console.log(err);
+          }
+    });*/
   },
 
   /**
@@ -98,8 +114,22 @@ Page({
     var openID = wx.getStorageSync('openid');
     var latitude = this.data.latitude;
     var longitude = this.data.longitude;
-    wx.redirectTo({
-        url: '/pages/receive_order/receive_order?openid='+openID+'&longitude='+longitude+'&latitude='+latitude //进入出车接单界面
-    });
+    if (this.data.status) {
+      wx.redirectTo({
+          url: '/pages/receive_order/receive_order?openid='+openID+'&longitude='+longitude+'&latitude='+latitude //进入出车接单界面
+      });
+    } else {
+      wx.showModal({
+        title: '错误',
+        content: '您的司机认证未审核！请先通过审核',
+        success: function(res) {
+          if (res.confirm) {
+
+          } else if (res.cancel) {
+
+          }
+        }
+      })
+    }
   }
 })
