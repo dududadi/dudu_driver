@@ -14,7 +14,7 @@
                 <view class="end-site">{{item.oh_end_name}}</view>
               </view>
               <view class="distance">{{item.distance}} km</view>
-              <button class="receive-order" catchtap="receiveOrder" data-user="{{item.open_id}}" data-time="{{item.oh_create_time}}" data-sSiteLongitude="{{oh_start_longitude}}" data-sSiteLatitude="{{oh_start_latitude}}" data-eSiteLongitude="{{oh_start_longitude}}" data-eSiteLatitude="{{oh_start_latitude}}">接单</button>
+              <button class="receive-order" catchtap="receiveOrder" data-user="{{item.open_id}}" data-time="{{item.oh_create_time}}" data-sSiteLongitude="{{item.oh_start_longitude}}" data-sSiteLatitude="{{item.oh_start_latitude}}" data-eSiteLongitude="{{item.oh_start_longitude}}" data-eSiteLatitude="{{item.oh_start_latitude}}">接单</button>
             </view>
         </view>
       </view>

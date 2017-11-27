@@ -5,9 +5,10 @@ Page({
      * 页面的初始数据
      */
     data: {
-      openid: '',
+      driver_open_id: '',
       latitude: '',
       longitude: '',
+      itv: '',
       orderList:[
         {
           open_id: 'o7r8T0XJAc4FSyQjVK_VJ-FhGppY', //乘客open_id
@@ -59,22 +60,11 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-      this.data.openid = options.openid;
-      var _this = this;
-      wx.getLocation({
-        type: 'gcj02',
-        success: function (res) {
-          //console.log(res);
-          var latitude = res.latitude;
-          var longitude = res.longitude;
-          _this.data.latitude = latitude;
-          _this.data.longitude = longitude;
-          //_this.getOrdersDes(longitude,latitude);
-        },
-        fail: function () {
-        }
+      this.setData({
+        driver_open_id: options.openid, //司机open_id
+        longitude: options.longitude,
+        latitude: options.latitude
       });
-      this.getOrders();
     },
 
     /**
@@ -89,6 +79,10 @@ Page({
               //console.log(res.windowWidth);
               //console.log(res.windowHeight);
           }
+      });
+      this.getOrders();
+      this.setData({
+        itv: setInterval(_this.getOrders, 5000)
       });
     },
 
@@ -134,44 +128,87 @@ Page({
 
     },
 
-    //获取订单详细信息
-    getOrdersDes: function (longitude,latitude) {
-      wx.request({
-        url: 'https://www.forhyj.cn/miniapp/User/xxx',
-        data: {},
-        method: 'POST',
-        dataType: 'json',
-        success: function (res) {
-          console.log(res);
-        },
-        fail: function (err) {
-          console.log(err);
-        }
-      })
-    },
-
     //司机接单事件
     receiveOrder: function (e) {
       var _this = this;
-      var dataObj = e.target.dataset;
-      wx.redirectTo({
-        url: '/pages/go/go?openid=' + _this.data.openid //进入接单页面
-      });
+      var data = e.target.dataset;
+      var openid = data.user; //用户open_id
+      var time = data.time; //订单生成时间
+      var sLongitude = data.ssitelongitude; //起点经度
+      var sLatitude = data.ssitelatitude; //起点纬度
+      var eLongitude = data.esitelongitude; //终点经度
+      var eLatitude = data.esitelatitude; //终点纬度
+      var timeInterval = parseInt(new Date().getTime()/1000 - (new Date(time).getTime()/1000));
+      console.log(timeInterval);
+      if(timeInterval <= 180000000000) {
+        wx.showLoading({
+          title: '加载中...',
+        });
+        wx.request({
+          url: 'https://www.forhyj.cn/miniapp/Driver/receiveOrder',
+          method: 'POST',
+          data: { openid: openid},
+          success: function (res) {
+            console.log(res);
+            res = res.data.trim();
+            if (res == 0) {
+              wx.hideLoading();
+              wx.showLoading({
+                title: '该单已过期',
+              });
+              setTimeout(wx.hideLoading(),1000);
+            } else {
+              wx.redirectTo({
+                url: '/pages/go/go?openid=' + openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude, //进入接单页面
+                success: function () {
+                  this.setData({
+                    itv: clearInterval(this.data.itv)
+                  });
+                  wx.hideLoading();
+                }
+              });
+            }
+          },
+          fail: function (err) {
+            console.log(err);
+          }
+        })
+      }
     },
 
     //获取订单信息
     getOrders: function () {
       var _this = this;
+      wx.getLocation({
+        type: 'gcj02',
+        success: function (res) {
+          //console.log(res);
+          var latitude = res.latitude;
+          var longitude = res.longitude;
+          _this.setData({
+              latitude: latitude,
+              longitude: longitude
+           });
+        },
+        fail: function () {
+
+        }
+      });
       wx.request({
         url: 'https://www.forhyj.cn/miniapp/Driver/getOrderList',
         method: 'POST',
-        data: {openid:_this.data.openid},
+        data: {
+          openid: _this.data.driver_open_id,
+          longitude: _this.data.longitude,
+          latitude: _this.data.latitude
+        },
         success: function (res) {
           var data = res.data;
-          _this.setData({
-            orderList: data
-          });
+           _this.setData({
+              orderList: data
+           });
           console.log(_this.data.orderList);
+          console.log(_this.data.longitude_this.data.latitude,);
         },
         fail: function (err) {
           console.log(err);
@@ -181,4 +218,5 @@ Page({
         }
       });
     }
+    
 })
