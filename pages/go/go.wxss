@@ -11,7 +11,7 @@
 .map_container{
   position: absolute;
   top: 30px;
-  bottom: 360px;
+  bottom: 60px;
   left: 0;
   right: 0;
 }

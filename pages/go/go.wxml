@@ -2,10 +2,10 @@
 <view class="flex-style">
   <text>{{textData}}</text>
 </view>
-<view class="map_container" bindlongpress='operation' touchstart='click'>
-  <map class="map" id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="12" show-location="true" markers="{{markers}}" polyline='{{polyline}}'></map>
+<view class="map_container" bindtouchend='startItv' bindtouchstart='stopItv'>
+  <map class="map" id="map" longitude="{{driv_longitude}}" latitude="{{driv_latitude}}" scale="12" show-location="true" markers="{{markers}}" polyline='{{polyline}}'></map>
 </view>
 <view class="btns">
-  <view id="receive-now" class="receive-now" catchtap="click">确认已接到乘客</view>
+  <view id="receive-now" class="receive-now" catchtap="received">确认已接到乘客</view>
   <view class="cancel-btn" catchtap="cancelOrder">取消订单</view>
 </view>

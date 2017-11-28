@@ -143,7 +143,6 @@ Page({
               driv_latitude: latitude,
               driv_longitude: longitude
            });
-          return 'hahahahaha';
         },
         fail: function () {
 

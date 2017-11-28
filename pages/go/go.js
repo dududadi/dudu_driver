@@ -47,7 +47,7 @@ Page({
       itv: '',//setInterval(this.paintMap, 2000)
       markers: [
         {
-          iconPath: "../../img/marker_checked.png",
+          iconPath: "../../imgs/marker_checked.png",
           id: 1,
           latitude: this.data.user_latitude,
           longitude: this.data.user_longitude,
@@ -125,7 +125,7 @@ Page({
     wx.getLocation({
       type: 'gcj02',
       success: function (res) {
-        //console.log(res);
+        console.log(res);
         _this.setData({
             driv_latitude: res.latitude,
             driv_longitude: res.longitude,
@@ -161,7 +161,7 @@ Page({
   },
 
   //接到乘客按钮
-  click: function (e) {
+  received: function (e) {
     var _this = this;
     wx.request({
       url: 'https://www.forhyj.cn/miniapp/Driver/received',
@@ -231,7 +231,7 @@ Page({
   //绘制地图
   drawMap: function (e) {
     var _this = this;
-    //console.log(_this.data.driv_location, _this.data.user_location);
+    console.log(_this.data.driv_location, _this.data.user_location);
     myAmapFun.getDrivingRoute({
       origin: _this.data.driv_location,
       destination: _this.data.user_location,
@@ -262,9 +262,19 @@ Page({
     })
   },
 
-  operation: function (e) {
-    console.log(e);
-    console.log('longpress');
-    console.log(this.data.itv);
+  startItv: function (e) {
+    var _this = this;
+    console.log('start');
+    this.setData({
+      itv: setInterval(_this.getDriverPos,2000)
+    });
+  },
+
+  stopItv: function (e) {
+    var _this = this;
+    console.log('end');
+    this.setData({
+      itv: clearInterval(_this.data.itv)
+    });
   }
 })
