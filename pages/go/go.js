@@ -11,28 +11,30 @@ Page({
   data: {
     user_openid: '',
     driv_open_id: wx.getStorageSync('openid'),
-    sSite: '',
+    sSite: '', //开始地名
     sLongitude: '',
     sLatitude: '',
     eLongitude: '',
     eLatitude: '',
-    polyline: [],
+    polyline: [], //路径规划点
     driv_longitude: '119.272119',
     driv_latitude: '26.035941',
     driv_location: '119.272119,26.035941',
     user_longitude: '119.390565',
     user_latitude: '25.985416',
     user_location: '119.390565,25.985416',
-    textData: {},
+    textData: {}, //道路导航信息
     itv: '',
-    markers: [],
-    step: 2
+    markers: [], //用户或目的地标记
+    step: 2, //位置信息获取步骤
+    behavior: 'go_receive' //当前驾驶行为
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(this.data.run);
     console.log(options);
     var _this = this;
     this.setData({
@@ -40,6 +42,7 @@ Page({
       sSite: options.sSite,
       sLongitude: options.sLongitude,
       sLatitude: options.sLatitude,
+      eSite: options.eSite,
       eLongitude: options.eLongitude,
       eLatitude: options.eLatitude,
       driv_longitude: options.driv_longitude,

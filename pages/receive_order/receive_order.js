@@ -163,6 +163,7 @@ Page({
       var eLatitude = data.esitelatitude; //终点纬度
       var timeInterval = parseInt(((new Date().getTime())/1000) - ((new Date(time).getTime())/1000));
       console.log(timeInterval);
+      console.log('/pages/go/go?user_openid=' + user_openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude + '&sLongitude=' + sLongitude + '&sLatitude=' + sLatitude + '&eLongitude=' + eLongitude + '&eLatitude=' + eLatitude + '&driv_longitude=' + _this.data.driv_longitude + '&driv_latitude=' + _this.data.driv_latitude);
       wx.showLoading({
         title: '加载中...',
       });
@@ -179,7 +180,6 @@ Page({
           console.log('请求发送成功');
           console.log(res);
           res = res.data.trim();
-          debugger;
           if (res == 0) {
             wx.hideLoading();
             wx.showLoading({
