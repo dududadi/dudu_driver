@@ -8,4 +8,4 @@
 <view class="btns">
   <view id="receive-now" class="receive-now" catchtap="received">确认已接到乘客</view>
   <view class="cancel-btn" catchtap="cancelOrder">取消订单</view>
-</view>
+</view>\

@@ -25,7 +25,8 @@ Page({
     user_location: '119.390565,25.985416',
     textData: {},
     itv: '',
-    markers: []
+    markers: [],
+    step: 2
   },
 
   /**
@@ -41,10 +42,10 @@ Page({
       sLatitude: options.sLatitude,
       eLongitude: options.eLongitude,
       eLatitude: options.eLatitude,
-      // driv_longitude: options.driv_longitude,
-      // driv_latitude: options.driv_latitude,
-      // driv_location: options.driv_longitude + ',' + options.driv_latitude,
-      itv: '',//setInterval(this.paintMap, 2000)
+      driv_longitude: options.driv_longitude,
+      driv_latitude: options.driv_latitude,
+      driv_location: options.driv_longitude + ',' + options.driv_latitude,
+      itv: '',
       markers: [
         {
           iconPath: "../../imgs/marker_checked.png",
@@ -73,7 +74,7 @@ Page({
     });
     this.drawMap();
     this.setData({
-      itv: setInterval(_this.getDriverPos,2000)
+      itv: setInterval(_this.getAllLocation,2000)
     });
   },
 
@@ -120,7 +121,7 @@ Page({
   },
 
   //获取当前司机位置
-  getDriverPos: function () {
+  getDriverLocation: function () {
     var _this = this;
     wx.getLocation({
       type: 'gcj02',
@@ -129,9 +130,9 @@ Page({
         _this.setData({
             driv_latitude: res.latitude,
             driv_longitude: res.longitude,
-            driv_location: res.longitude + ',' + res.latitude
+            driv_location: res.longitude + ',' + res.latitude,
+            step: 1
          });
-        _this.drawMap();
       },
       fail: function () {
 
@@ -150,14 +151,24 @@ Page({
       },
       success: function (res) {
         console.log(res);
+        if (_this.data.step === 1 && true) {
+          _this.setData({
+            step: 2
+          });
+          _this.drawMap();
+        }
       },
       fail: function (err) {
         console.log(err);
-      },
-      header: {
-        'content-type': 'application/json' // 默认值
       }
     });
+  },
+
+  //获取双方位置
+  getAllLocation: function (e) {
+    var _this = this;
+    this.getDriverLocation();
+    this.getUserLocation();
   },
 
   //接到乘客按钮
@@ -171,7 +182,6 @@ Page({
       },
       success: function (res) {
         console.log(res);
-        _this.getUserLocation();
       },
       fail: function (err) {
         console.log(err);
@@ -232,41 +242,48 @@ Page({
   drawMap: function (e) {
     var _this = this;
     console.log(_this.data.driv_location, _this.data.user_location);
-    myAmapFun.getDrivingRoute({
-      origin: _this.data.driv_location,
-      destination: _this.data.user_location,
-      success: function(data){
-        //console.log(data);
-        var points = [];
+    if (this.data.step === 2) {
+      _this.setData({
+        step: 0
+      });
 
-        if(data.paths && data.paths[0] && data.paths[0].steps){
-          var steps = data.paths[0].steps;
-          for(var i = 0; i < steps.length; i++){
-            var poLen = steps[i].polyline.split(';');
-            for(var j = 0;j < poLen.length; j++){
-              points.push({
-                longitude: parseFloat(poLen[j].split(',')[0]),
-                latitude: parseFloat(poLen[j].split(',')[1])
-              })
+      myAmapFun.getDrivingRoute({
+        origin: _this.data.driv_location,
+        destination: _this.data.user_location,
+        success: function (data) {
+          
+          //console.log(data);
+          var points = [];
+
+          if (data.paths && data.paths[0] && data.paths[0].steps) {
+            var steps = data.paths[0].steps;
+            for (var i = 0; i < steps.length; i++) {
+              var poLen = steps[i].polyline.split(';');
+              for (var j = 0; j < poLen.length; j++) {
+                points.push({
+                  longitude: parseFloat(poLen[j].split(',')[0]),
+                  latitude: parseFloat(poLen[j].split(',')[1])
+                })
+              }
             }
           }
+          _this.setData({
+            polyline: [{
+              points: points,
+              color: "#0091ff",
+              width: 6
+            }]
+          });
         }
-        _this.setData({
-          polyline: [{
-            points: points,
-            color: "#0091ff",
-            width: 6
-          }]
-        });
-      }
-    })
+      })
+    }
   },
 
   startItv: function (e) {
     var _this = this;
     console.log('start');
     this.setData({
-      itv: setInterval(_this.getDriverPos,2000)
+      itv: setInterval(_this.getAllLocation,2000)
     });
   },
 
