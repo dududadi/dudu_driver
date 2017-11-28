@@ -18,6 +18,7 @@ Page({
     btnTip: '确认已接到乘客',
     user_openid: '',
     driv_open_id: wx.getStorageSync('openid'),
+    orderId: '',
     sSite: '', //起点经纬度
     sName: '', //起点名
     sLongitude: '', //起点经度
@@ -27,12 +28,12 @@ Page({
     eLongitude: '', //终点经度
     eLatitude: '', //终点纬度
     polyline: [], //路径规划点
-    driv_longitude: '119.272119',
-    driv_latitude: '26.035941',
-    driv_location: '119.272119,26.035941',
-    user_longitude: '119.390565',
-    user_latitude: '25.985416',
-    user_location: '119.390565,25.985416',
+    driv_longitude: '',
+    driv_latitude: '',
+    driv_location: '',
+    user_longitude: '',
+    user_latitude: '',
+    user_location: '',
     textData: {}, //道路导航信息
     itv: '', //计时器
     markers: [], //用户或目的地标记
@@ -220,6 +221,7 @@ Page({
         success: function (res) {
           if (res.data) {
             _this.setData({
+              orderId: res.data,
               behavior: 'go_destination',
               style_top: '30px',
               style_show: 'none',
@@ -369,14 +371,16 @@ Page({
           //每5秒发送一次
           _this.pushPoint(res.longitude,res.latitude);
         }
+        console.log(pointArr);
         _this.setData({
           polyline: [{
             points: pointArr,
-            color: "#E67F02",
+            color: "#25A5F7",
             width: 6
           }]
         });
 
+        console.log(_this.data.driv_location,_this.data.eSite);
         //获取司机位置到终点的导航信息
         myAmapFun.getDrivingRoute({
           origin: _this.data.driv_location,
@@ -387,6 +391,7 @@ Page({
             _this.setData({
               textData: data.paths[0].steps[0].instruction
             });
+            console.log(data.paths[0].steps);
           }
         })
       },
@@ -405,6 +410,7 @@ Page({
       data: {
         longitude: longitude,
         latitude: latitude,
+        orderId: _this.data.orderId
       },
       method: 'POST',
       success: function (res) {
