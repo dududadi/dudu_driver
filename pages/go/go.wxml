@@ -1,12 +1,11 @@
 <!--go.wxml-->
-<view id="page" catahtap="click">
-  <view class="mpas" catahtap="click">
-    <view class="map_container" catahtap="click">
-      <map class="map" id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="16" markers="{{markers}}" show-location catahtap="click"></map>
-    </view>
-  </view>
-  <view class="btns" wx:if="{{showBtn}}">
-    <view id="receive-now" class="receive-now" catchtap="click">确认已接到乘客</view>
-    <view class="cancel-btn">取消订单</view>
-  </view>
+<view class="flex-style">
+  <text>{{textData}}</text>
+</view>
+<view class="map_container" bindlongpress='operation' touchstart='click'>
+  <map class="map" id="map" longitude="{{longitude}}" latitude="{{latitude}}" scale="12" show-location="true" markers="{{markers}}" polyline='{{polyline}}'></map>
+</view>
+<view class="btns">
+  <view id="receive-now" class="receive-now" catchtap="click">确认已接到乘客</view>
+  <view class="cancel-btn" catchtap="cancelOrder">取消订单</view>
 </view>

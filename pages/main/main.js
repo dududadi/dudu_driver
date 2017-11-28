@@ -6,8 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    latitude: '',
-    longitude: '',
+    driv_latitude: '',
+    driv_longitude: '',
     status: true
   },
 
@@ -22,8 +22,10 @@ Page({
           //console.log(res);
           var latitude = res.latitude;
           var longitude = res.longitude;
-          _this.data.latitude = latitude;
-          _this.data.longitude = longitude;
+          _this.setData({
+            driv_latitude: latitude,
+            driv_longitude: longitude
+          });
         },
         fail: function () {
 
@@ -111,12 +113,12 @@ Page({
 
   //出车
   doReceive: function () {
-    var openID = wx.getStorageSync('openid');
-    var latitude = this.data.latitude;
-    var longitude = this.data.longitude;
+    var driv_open_id = wx.getStorageSync('openid');
+    var latitude = this.data.driv_latitude;
+    var longitude = this.data.driv_longitude;
     if (this.data.status) {
       wx.redirectTo({
-          url: '/pages/receive_order/receive_order?openid='+openID+'&longitude='+longitude+'&latitude='+latitude //进入出车接单界面
+          url: '/pages/receive_order/receive_order?driv_openid='+driv_open_id+'&driv_longitude='+longitude+'&driv_latitude='+latitude //进入出车接单界面
       });
     } else {
       wx.showModal({

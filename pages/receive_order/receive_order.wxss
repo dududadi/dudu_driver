@@ -56,11 +56,11 @@ page{
   overflow-x: hidden;
 }
 .site-info{
-  display: flex;
   margin-bottom: 8px;
 }
 .start-site{
-  width: 50%;
+  display:inline-block;
+  vertical-align:middle;
   padding-left: 5px;
   overflow:hidden;
   //height:26px;
@@ -70,13 +70,16 @@ page{
 }
 .end-site{
   padding-right: 5px;
-  width: 50%;
+  display:inline-block;
+  vertical-align:middle;
   text-align: right;
   overflow:hidden;
   //height:26px;
 }
 .divide{
   padding:0 5px;
+  display:inline-block;
+  vertical-align:middle;
 }
 .receive-order{
   background-color: #4C4B5B;

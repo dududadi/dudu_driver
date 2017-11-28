@@ -1,5 +1,5 @@
 <!--receive_order.wxml-->
-<view class="content" style="height:504px">
+<view class="content" style="height:100%">
   <view class="content-top">
     <view>今日已接订单 <text>XXX</text></view>
     <button class="refresh-btn"catchtap="getOrders">刷新订单信息</button>
@@ -14,7 +14,9 @@
                 <view class="end-site">{{item.oh_end_name}}</view>
               </view>
               <view class="distance">{{item.distance}} km</view>
-              <button class="receive-order" bindtap="receiveOrder" data-user="{{item.open_id}}" data-time="{{item.oh_create_time}}" data-sSiteLongitude="{{item.oh_start_longitude}}" data-sSiteLatitude="{{item.oh_start_latitude}}" data-eSiteLongitude="{{item.oh_start_longitude}}" data-eSiteLatitude="{{item.oh_start_latitude}}">接单</button>
+              <view bindtap="receiveOrder">
+                <button class="receive-order" data-user="{{item.open_id}}" data-time="{{item.oh_create_time}}" data-sSiteLongitude="{{item.oh_start_longitude}}" data-sSiteLatitude="{{item.oh_start_latitude}}" data-eSiteLongitude="{{item.oh_start_longitude}}" data-eSiteLatitude="{{item.oh_start_latitude}}">接单</button>
+              </view>
             </view>
         </view>
       </view>
