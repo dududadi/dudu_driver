@@ -179,13 +179,13 @@ Page({
         success: function (res) {
           console.log('请求发送成功');
           console.log(res);
-          res = res.data.trim();
+          res = res.data;
           if (res == 0) {
             wx.hideLoading();
             wx.showLoading({
               title: '该单已过期',
             });
-            setTimeout(wx.hideLoading(), 1000);
+            setTimeout(wx.hideLoading, 1000);
           } else {
             wx.redirectTo({
               url: '/pages/go/go?user_openid=' + user_openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude + '&driv_longitude=' + _this.data.driv_longitude + '&driv_latitude=' + _this.data.driv_latitude, //进入接单页面
