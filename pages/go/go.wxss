@@ -1,16 +1,21 @@
+.flex-style .fcolor-red{
+  color: #f00;
+}
 .flex-style{
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   font-size: 36rpx;
+  flex-direction: column;
 }
 .flex-style text{
+  display: block;
   margin: 0 auto;
   line-height: 70rpx;
+  color: #E67F02;
 }
 .map_container{
   position: absolute;
-  top: 30px;
   bottom: 60px;
   left: 0;
   right: 0;

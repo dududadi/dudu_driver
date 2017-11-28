@@ -45,14 +45,6 @@ Page({
           oh_end_name: '终点',
           distance: 6.66
         }
-      ],
-      array: [
-        {
-          message: 'foo',
-        },
-        {
-          message: 'bar'
-        }
       ]
     },
 
@@ -157,13 +149,14 @@ Page({
       var data = e.target.dataset;
       var user_openid = data.user; //用户open_id
       var time = data.time; //订单生成时间
+      var sName = data.sname; //起点名
       var sLongitude = data.ssitelongitude; //起点经度
       var sLatitude = data.ssitelatitude; //起点纬度
+      var eName = data.ename; //终点名
       var eLongitude = data.esitelongitude; //终点经度
       var eLatitude = data.esitelatitude; //终点纬度
       var timeInterval = parseInt(((new Date().getTime())/1000) - ((new Date(time).getTime())/1000));
-      console.log(timeInterval);
-      console.log('/pages/go/go?user_openid=' + user_openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude + '&sLongitude=' + sLongitude + '&sLatitude=' + sLatitude + '&eLongitude=' + eLongitude + '&eLatitude=' + eLatitude + '&driv_longitude=' + _this.data.driv_longitude + '&driv_latitude=' + _this.data.driv_latitude);
+      //console.log(timeInterval);
       wx.showLoading({
         title: '加载中...',
       });
@@ -188,7 +181,7 @@ Page({
             setTimeout(wx.hideLoading, 1000);
           } else {
             wx.redirectTo({
-              url: '/pages/go/go?user_openid=' + user_openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude + '&driv_longitude=' + _this.data.driv_longitude + '&driv_latitude=' + _this.data.driv_latitude, //进入接单页面
+              url: '/pages/go/go?user_openid=' + user_openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude + '&driv_longitude=' + _this.data.driv_longitude + '&driv_latitude=' + _this.data.driv_latitude + '&sLongitude=' + sLongitude + '&sLatitude=' + sLatitude + '&eLongitude=' + eLongitude + '&eLatitude=' + eLatitude + '&sName=' + sName + '&eName=' + eName, //进入接单页面
               success: function () {
                 _this.setData({
                   itv: clearInterval(_this.data.itv)

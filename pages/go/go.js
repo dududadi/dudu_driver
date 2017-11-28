@@ -9,13 +9,18 @@ Page({
    * 页面的初始数据
    */
   data: {
+    style_show: 'block',
+    style_top: '60px',
     user_openid: '',
     driv_open_id: wx.getStorageSync('openid'),
-    sSite: '', //开始地名
-    sLongitude: '',
-    sLatitude: '',
-    eLongitude: '',
-    eLatitude: '',
+    sSite: '', //起点经纬度
+    sName: '', //起点名
+    sLongitude: '', //起点经度
+    sLatitude: '', //起点纬度
+    eSite: '', //终点经纬度
+    eName: '', //终点名
+    eLongitude: '', //终点经度
+    eLatitude: '', //终点纬度
     polyline: [], //路径规划点
     driv_longitude: '119.272119',
     driv_latitude: '26.035941',
@@ -24,7 +29,7 @@ Page({
     user_latitude: '25.985416',
     user_location: '119.390565,25.985416',
     textData: {}, //道路导航信息
-    itv: '',
+    itv: '', //计时器
     markers: [], //用户或目的地标记
     step: 2, //位置信息获取步骤
     behavior: 'go_receive' //当前驾驶行为
@@ -34,21 +39,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(this.data.run);
     console.log(options);
     var _this = this;
     this.setData({
       user_openid: options.user_openid,
       sSite: options.sSite,
+      sName: options.sName,
       sLongitude: options.sLongitude,
       sLatitude: options.sLatitude,
       eSite: options.eSite,
+      eName: options.eName,
       eLongitude: options.eLongitude,
       eLatitude: options.eLatitude,
       driv_longitude: options.driv_longitude,
       driv_latitude: options.driv_latitude,
       driv_location: options.driv_longitude + ',' + options.driv_latitude,
-      itv: '',
       markers: [
         {
           iconPath: "../../imgs/marker_checked.png",
@@ -136,6 +141,8 @@ Page({
             driv_location: res.longitude + ',' + res.latitude,
             step: 1
          });
+
+        _this.getUserLocation();
       },
       fail: function () {
 
@@ -150,15 +157,38 @@ Page({
       url: 'https://www.forhyj.cn/miniapp/Driver/getUserLocation',
       method: 'POST',
       data: {
-        openid: _this.data.driver_open_id
+        openid: _this.data.driv_open_id
       },
       success: function (res) {
-        console.log(res);
-        if (_this.data.step === 1 && true) {
+        console.log(res.data);
+        console.log(_this.data.step);
+        if (_this.data.step === 1 && res.data) {
           _this.setData({
+            user_longitude: res.data.ul_longitude,
+            user_latitude: res.data.ul_latitude,
+            user_location: res.data.ul_longitude + ',' + res.data.ul_latitude,
+            markers: [
+              {
+                iconPath: "../../imgs/marker_checked.png",
+                id: 1,
+                latitude: res.data.ul_latitude,
+                longitude: res.data.ul_longitude,
+                width: 23,
+                height: 33
+              }
+            ],
             step: 2
           });
           _this.drawMap();
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: '未获取到乘客位置',
+            showCancel: false,
+            success: function(res) {
+
+            }
+          });
         }
       },
       fail: function (err) {
@@ -171,20 +201,40 @@ Page({
   getAllLocation: function (e) {
     var _this = this;
     this.getDriverLocation();
-    this.getUserLocation();
   },
 
   //接到乘客按钮
   received: function (e) {
     var _this = this;
+    this.stopItv();
     wx.request({
       url: 'https://www.forhyj.cn/miniapp/Driver/received',
       method: 'POST',
       data: {
-        openid: _this.data.driver_open_id
+        openid: _this.data.driv_open_id
       },
       success: function (res) {
-        console.log(res);
+        if (res.data) {
+          _this.setData({
+            behavior: 'go_destination',
+            style_top: '30px',
+            style_show: 'none'
+          });
+
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: '操作出错，请联系客服！',
+            showCancel: false,
+            success: function(res) {
+              if (res.confirm) {
+                wx.redirectTo({
+                  url: '/pages/receive_order/receive_order'
+                });
+              }
+            }
+          });
+        }
       },
       fail: function (err) {
         console.log(err);
@@ -254,7 +304,7 @@ Page({
         origin: _this.data.driv_location,
         destination: _this.data.user_location,
         success: function (data) {
-          
+
           //console.log(data);
           var points = [];
 
