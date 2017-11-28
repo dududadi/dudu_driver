@@ -19,31 +19,31 @@ Page({
           oh_end_name: '终点', //乘车终点
           oh_end_longitude: "119.231", //终点经度
           oh_end_latitude: "26.0773", //终点纬度
-          distance: 11.20 //两地路程距离
+          oh_km_num: 11.20 //两地路程距离
         },
         {
           open_id: 2,
           oh_start_name: '起点',
           oh_end_name: '终点',
-          distance: 9.05
+          oh_km_num: 9.05
         },
         {
           open_id: 3,
           oh_start_name: '起点',
           oh_end_name: '终点',
-          distance: 24.00
+          oh_km_num: 24.00
         },
         {
           open_id: 4,
           oh_start_name: '起点',
           oh_end_name: '终点',
-          distance: 5.29
+          oh_km_num: 5.29
         },
         {
           open_id: 5,
           oh_start_name: '起点',
           oh_end_name: '终点',
-          distance: 6.66
+          oh_km_num: 6.66
         }
       ]
     },
@@ -183,9 +183,7 @@ Page({
             wx.redirectTo({
               url: '/pages/go/go?user_openid=' + user_openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude + '&driv_longitude=' + _this.data.driv_longitude + '&driv_latitude=' + _this.data.driv_latitude + '&sLongitude=' + sLongitude + '&sLatitude=' + sLatitude + '&eLongitude=' + eLongitude + '&eLatitude=' + eLatitude + '&sName=' + sName + '&eName=' + eName, //进入接单页面
               success: function () {
-                _this.setData({
-                  itv: clearInterval(_this.data.itv)
-                });
+                _this.stopItv();
                 wx.hideLoading();
               }
             });
@@ -214,6 +212,10 @@ Page({
         },
         success: function (res) {
           var data = res.data;
+          for (var i = 0; i < data.length; i++) {
+            data[i].oh_km_num = Math.round(data[i].oh_km_num/10)/100;
+          };
+          console.log(data);
            _this.setData({
               orderList: data
            });
@@ -226,6 +228,12 @@ Page({
         header: {
           'content-type': 'application/json' // 默认值
         }
+      });
+    },
+
+    stopItv: function () {
+      this.setData({
+        itv: clearInterval(this.data.itv)
       });
     }
 

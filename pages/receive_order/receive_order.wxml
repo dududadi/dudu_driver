@@ -13,7 +13,7 @@
                 <view class="divide">  -  </view>
                 <view class="end-site">{{item.oh_end_name}}</view>
               </view>
-              <view class="distance">{{item.distance}} km</view>
+              <view class="distance">{{item.oh_km_num}} km</view>
               <view bindtap="receiveOrder">
                 <button class="receive-order" data-user="{{item.open_id}}" data-time="{{item.oh_create_time}}" data-sSiteLongitude="{{item.oh_start_longitude}}" data-sSiteLatitude="{{item.oh_start_latitude}}" data-eSiteLongitude="{{item.oh_start_longitude}}" data-eSiteLatitude="{{item.oh_start_latitude}}" data-sName="{{item.oh_start_name}}" data-eName="{{item.oh_end_name}}">接单</button>
               </view>
