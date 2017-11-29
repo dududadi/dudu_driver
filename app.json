@@ -5,7 +5,8 @@
     "pages/logs/logs",
     "pages/main/main",
     "pages/go/go",
-    "pages/receive_order/receive_order"
+    "pages/receive_order/receive_order",
+    "pages/order/order"
   ],
   "window":{
     "backgroundTextStyle":"light",

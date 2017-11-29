@@ -1,0 +1,30 @@
+<view class='order-view'>
+  <view class='order-border' wx:for="{{resArr}}" wx:key='{{item}}'>
+    <view class='order-title'>
+      <view class='title-img'><image style='width:40px;height:40px' src='{{item.headImg}}'></image></view>
+      <view class='title-info'>
+        <text>起点：{{item.startName}}</text>
+        <text>终点：{{item.endName}}</text>
+      </view>
+      <view class='title-stave'><text>{{item.olsName}}</text></view>
+    </view>
+    <scroll-view scroll-y style="height: 120px;" scroll-top="{{scrollTop}}">
+      <view class="scroll-view-item"><text>用户名字:{{item.userName}}</text></view>
+      <view class="scroll-view-item"><text>司机名字:{{item.drivName}}</text></view>
+      <view class="scroll-view-item"><text>下单时间:{{item.startTime}}</text></view>
+      <view class="scroll-view-item"><text>结束时间:{{item.endTime}}</text></view>
+      <view class="scroll-view-item"><text>付款方式:{{item.rptName}}</text></view>
+      <view class="scroll-view-item"><text>订单状态:{{item.olsName}}</text></view>
+      <view class="scroll-view-item"><text>里程数:{{item.kmNum}}</text></view>
+      <view class="scroll-view-item"><text>里程价:{{item.kmPrice}}</text></view>
+      <view class="scroll-view-item"><text>超时价:{{item.overTimePrice}}</text></view>
+      <view class="scroll-view-item"><text>小费:{{item.tips}}</text></view>
+    </scroll-view>
+    <view class='order-footer'>
+      <button wx:if='{{item.olsName == "未接客"}}' class='footer-btn'>催促司机</button>
+      <button wx:elif='{{item.olsName == "未过期"}}' class='footer-btn'>查看地图</button>
+      <button wx:elif='{{item.olsName == "已过期"}}' class='footer-btn'>评价司机</button>
+      <button wx:else='{{item.olsName == "未接客"}}' class='footer-btn'>评价司机</button>
+    </view>
+  </view>
+</view>
