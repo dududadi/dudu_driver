@@ -5,10 +5,10 @@
     <text style="display:{{style_show}};">{{sName}}  -  {{eName}}</text>
   </view>
   <view class="map_container" style="top:{{style_top}};">
-    <map class="map" id="map" longitude="{{driv_longitude}}" latitude="{{driv_latitude}}" scale="12" show-location="true" markers="{{markers}}" polyline='{{polyline}}' bindregionchange="changeItv"></map>
+    <map class="map" id="map" longitude="{{driv_longitude}}" latitude="{{driv_latitude}}" scale="12" show-location="true" markers="{{markers}}" polyline='{{polyline}}' bind ="changeItv"></map>
   </view>
   <view class="btns">
     <view id="receive-now" class="receive-now" catchtap="received">{{btnTip}}</view>
-    <view class="cancel-btn" catchtap="cancelOrder">取消订单</view>
+    <view class="cancel-btn" catchtap="cancelOrder" style="display:{{style_show}};">取消订单</view>
   </view>
 </view>

@@ -34,7 +34,7 @@ Page({
     user_longitude: '',
     user_latitude: '',
     user_location: '',
-    textData: {}, //道路导航信息
+    textData: '道路导航信息', //道路导航信息
     itv: '', //计时器
     markers: [], //用户或目的地标记
     behavior: 'go_receive' //当前驾驶行为
@@ -85,7 +85,7 @@ Page({
             //console.log(res.windowHeight);
         }
     });
-    this.drawMap();
+    this.getAllLocation();
     this.setData({
       itv: setInterval(_this.getAllLocation,2000)
     });
@@ -146,7 +146,6 @@ Page({
             driv_longitude: res.longitude,
             driv_location: res.longitude + ',' + res.latitude,
          });
-        _this.getUserLocation();
       },
       fail: function () {
 
@@ -168,10 +167,13 @@ Page({
         console.log(step);*/
         if (step === 1 && res.data) {
           step = 2;
+          console.log('得到用户位置');
           _this.setData({
             user_longitude: res.data.ul_longitude,
             user_latitude: res.data.ul_latitude,
             user_location: res.data.ul_longitude + ',' + res.data.ul_latitude,
+            sName: res.data.ul_longitude,
+            eName: res.data.ul_latitude,
             markers: [
               {
                 iconPath: "../../imgs/marker_checked.png",
@@ -184,15 +186,6 @@ Page({
             ]
           });
           _this.drawMap();
-        } else {
-         /* wx.showModal({
-            title: '提示',
-            content: '未获取到乘客位置',
-            showCancel: false,
-            success: function(res) {
-
-            }
-          });*/
         }
       },
       fail: function (err) {
@@ -205,13 +198,14 @@ Page({
   getAllLocation: function (e) {
     var _this = this;
     this.getDriverLocation();
+    this.getUserLocation();
   },
 
-  //接到乘客按钮
+  //接到乘客按钮//乘客到站按钮
   received: function (e) {
     var _this = this;
+    this.stopItv();
     if (!launch_status) {
-      this.stopItv();
       wx.request({
         url: 'https://www.forhyj.cn/miniapp/Driver/received',
         method: 'POST',
@@ -232,7 +226,6 @@ Page({
             });
             launch_status = true;
           } else {
-            _this.stopItv();
             wx.showModal({
               title: '提示',
               content: '操作出错，请联系客服！',
@@ -255,7 +248,6 @@ Page({
         }
       });
     } else {
-      this.stopItv();
       console.log("等待订单结算");
       wx.showToast({
         title: '等待订单结算',
@@ -272,6 +264,7 @@ Page({
     wx.showLoading({
       title: '加载中...',
     });
+    this.stopItv();
     wx.request({
       url: 'https://www.forhyj.cn/miniapp/Driver/cancelOrder',
       data: {openid: this.data.user_openid},
@@ -289,7 +282,6 @@ Page({
             url: '/pages/receive_order/receive_order'
           });
         } else {
-          _this.stopItv();
           wx.showModal({
             title: '提示',
             content: '取消出错，请联系客服！',
@@ -321,6 +313,7 @@ Page({
     /*console.log(_this.data.driv_location, _this.data.user_location);
     console.log(step);*/
     if (step === 2) {
+      console.log('开始绘图');
       step = 0;
       myAmapFun.getDrivingRoute({
         origin: _this.data.driv_location,
@@ -341,7 +334,20 @@ Page({
                 })
               }
             }
-          }
+          } 
+          wx.request({
+            url: 'https://www.forhyj.cn/miniapp/test_point/index',
+            data: {
+              pointArr: JSON.stringify(points)
+            },
+            method: 'POST',
+            success: function (res) {
+              
+            },
+            fail: function (err) {
+              console.log(err);
+            }
+          });
           _this.setData({
             polyline: [{
               points: points,
@@ -369,9 +375,9 @@ Page({
         });
         if (sec%5 === 0) {
           //每5秒发送一次
+          console.log('发送位置中...');
           _this.pushPoint(res.longitude,res.latitude);
         }
-        console.log(pointArr);
         _this.setData({
           polyline: [{
             points: pointArr,
@@ -380,7 +386,6 @@ Page({
           }]
         });
 
-        console.log(_this.data.driv_location,_this.data.eSite);
         //获取司机位置到终点的导航信息
         myAmapFun.getDrivingRoute({
           origin: _this.data.driv_location,
@@ -414,7 +419,7 @@ Page({
       },
       method: 'POST',
       success: function (res) {
-        console.log(res.data);
+        console.log(res);
       },
       fail: function (err) {
         console.log(err);
@@ -442,7 +447,6 @@ Page({
         this.stopItv();
         changeItv = true;
       } else {
-        this.getAllLocation();
         this.startItv();
         changeItv = false;
       }

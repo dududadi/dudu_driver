@@ -170,7 +170,6 @@ Page({
           latitude: _this.data.driv_latitude
         },
         success: function (res) {
-          console.log('请求发送成功');
           console.log(res);
           res = res.data;
           if (res == 0) {
@@ -190,7 +189,6 @@ Page({
           }
         },
         fail: function (err) {
-          console.log('请求发送成功');
           console.log(err);
         }
       })
