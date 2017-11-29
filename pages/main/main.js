@@ -133,5 +133,12 @@ Page({
         }
       })
     }
+  },
+
+  //历史订单按钮
+  myOrder: function (e) {
+    wx.navigateTo({
+      url: '../order/order?openid=' + wx.getStorageSync('openid')
+    })
   }
 })

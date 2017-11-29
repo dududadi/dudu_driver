@@ -7,9 +7,9 @@
         <text class="iconfont icon-driver-car"></text>
         <text>出车</text>
       </view>
-      <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+      <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}" catchtap="myOrder">
         <text class="iconfont icon-orders"></text>
-        <text>订单记录</text>
+        <text>历史订单</text>
       </view>
       <view class="item borderR-none" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
         <text class="iconfont icon-qianbao"></text>
