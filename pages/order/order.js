@@ -22,7 +22,7 @@ Page({
     var wxopid=location.openid;
     var that=this;
     wx.request({
-      url: 'https://www.forhyj.cn/miniapp/order/orderList',
+      url: 'https://www.forhyj.cn/miniapp/order/dirvOrderList',
       method:'POST',
       data: { 'wxopid': wxopid},
       success:function(res){
