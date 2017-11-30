@@ -25,8 +25,10 @@
   <view class="section">
     <text class="section-title">联系我们</text>
     <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
-      <text class="iconfont icon-kefu"></text>
-      <text>客服</text>
+      <contact-button session-from="weapp">
+        <text class="iconfont icon-kefu"></text>
+        <text>客服</text>
+      </contact-button>
     </view>
     <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
       <text class="iconfont icon-suggest"></text>

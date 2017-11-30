@@ -1,14 +1,16 @@
 <!--go.wxml-->
 <view>
   <view class="flex-style">
-    <text class="fcolor-red">{{textData}}</text>
+    <view style="margin-left:{{margin}};margin-right:{{margin}}">
+      <text class="fcolor-red" style="height:{{guideInfoHeight}}">{{textData}}</text>
+    </view>
     <text style="display:{{style_show}};">{{sName}}  -  {{eName}}</text>
   </view>
   <view class="map_container" style="top:{{style_top}};">
-    <map class="map" id="map" longitude="{{driv_longitude}}" latitude="{{driv_latitude}}" scale="12" show-location="true" markers="{{markers}}" polyline='{{polyline}}' bind ="changeItv"></map>
+    <map class="map" id="map" longitude="{{driv_longitude}}" latitude="{{driv_latitude}}" scale="12" show-location="true" markers="{{markers}}" polyline='{{polyline}}' bindregionchange ="changeItv"></map>
   </view>
   <view class="btns">
-    <view id="receive-now" class="receive-now" catchtap="received">{{btnTip}}</view>
+    <view id="confirm-btn" class="{{confirmBtnStyle}}" catchtap="received">{{btnTip}}</view>
     <view class="cancel-btn" catchtap="cancelOrder" style="display:{{style_show}};">取消订单</view>
   </view>
 </view>

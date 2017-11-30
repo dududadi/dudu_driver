@@ -15,6 +15,7 @@ Page({
   data: {
     style_show: 'block',
     style_top: '60px',
+    guideInfoHeight: '30px',
     btnTip: '确认已接到乘客',
     user_openid: '',
     driv_open_id: wx.getStorageSync('openid'),
@@ -37,7 +38,14 @@ Page({
     textData: '道路导航信息', //道路导航信息
     itv: '', //计时器
     markers: [], //用户或目的地标记
-    behavior: 'go_receive' //当前驾驶行为
+    behavior: 'go_receive', //当前驾驶行为
+    second: 2000,
+    confirmBtnStyle: 'receive-now',
+    size: '36',
+    dpr: '',
+    wordsContentW: '',
+    wordsCount: '',
+    margin: ''
   },
 
   /**
@@ -70,6 +78,23 @@ Page({
         }
       ]
     });
+
+    wx.getSystemInfo({
+      success: function(res) {
+        var screenW = res.windowWidth; //窗口可使用宽度
+        var dpr = res.pixelRatio; //设备像素比
+        var wordsCount = parseInt(screenW*dpr/_this.data.size);
+        var wordsContentW = wordsCount*_this.data.size/dpr;
+        var remain = (screenW - wordsContentW)/2;
+        //console.log(wordsCount,wordsContentW);
+        _this.setData({
+          wordsContentW: wordsContentW,
+          dpr: dpr,
+          wordsCount: wordsCount,
+          margin: remain + 'px'
+        });
+      }
+    });
   },
 
   /**
@@ -77,17 +102,9 @@ Page({
    */
   onReady: function () {
     var _this = this;
-    wx.getSystemInfo({
-        success: function(res) {
-            //console.log(res.screenWidth);
-            //console.log(res.screenHeight);
-            //console.log(res.windowWidth);
-            //console.log(res.windowHeight);
-        }
-    });
     this.getAllLocation();
     this.setData({
-      itv: setInterval(_this.getAllLocation,2000)
+      itv: setInterval(_this.getAllLocation,_this.data.second)
     });
   },
 
@@ -172,8 +189,6 @@ Page({
             user_longitude: res.data.ul_longitude,
             user_latitude: res.data.ul_latitude,
             user_location: res.data.ul_longitude + ',' + res.data.ul_latitude,
-            sName: res.data.ul_longitude,
-            eName: res.data.ul_latitude,
             markers: [
               {
                 iconPath: "../../imgs/marker_checked.png",
@@ -217,9 +232,10 @@ Page({
             _this.setData({
               orderId: res.data,
               behavior: 'go_destination',
-              style_top: '30px',
+              guideInfoHeight: '60px',
               style_show: 'none',
-              btnTip: '确认乘客到达终点'
+              btnTip: '确认乘客到达终点',
+              confirmBtnStyle: 'arrive-now'
             });
             _this.setData({
               itv: setInterval(_this.launch,1000)
@@ -248,12 +264,43 @@ Page({
         }
       });
     } else {
-      console.log("等待订单结算");
-      wx.showToast({
-        title: '等待订单结算',
-        icon: 'success',
-        duration: 3000
-      })
+      wx.showLoading({
+      title: '等待订单结算中',
+    });
+      wx.request({
+        url: 'https://www.forhyj.cn/miniapp/Driver/arrive',
+        method: 'POST',
+        data: {
+          openid: _this.data.orderId
+        },
+        success: function (res) {
+          if (res.data) {
+            wx.hideLoading();
+            wx.showToast({
+              title: '结算成功',
+              icon: 'success',
+              duration: 1000
+            });
+          } else {
+            wx.hideLoading();
+            wx.showModal({
+              title: '提示',
+              content: '操作出错，请联系客服！',
+              showCancel: false,
+              success: function(res) {
+                if (res.confirm) {
+                  wx.redirectTo({
+                    url: '/pages/receive_order/receive_order'
+                  });
+                }
+              }
+            });
+          }
+        },
+        fail: function (err) {
+          console.log(err);
+        }
+      });
     };
 
   },
@@ -334,27 +381,26 @@ Page({
                 })
               }
             }
-          } 
-          wx.request({
-            url: 'https://www.forhyj.cn/miniapp/test_point/index',
-            data: {
-              pointArr: JSON.stringify(points)
-            },
-            method: 'POST',
-            success: function (res) {
-              
-            },
-            fail: function (err) {
-              console.log(err);
-            }
-          });
+          }
+          var words = data.paths[0].steps[0].instruction;
+          if (words.length > _this.data.wordsCount ) {
+            _this.setData({
+              style_show: 'none',
+              guideInfoHeight: '60px'
+            });
+          } else {
+            _this.setData({
+              style_show: 'block',
+              guideInfoHeight: '30px'
+            });
+          }
           _this.setData({
             polyline: [{
               points: points,
               color: "#0091ff",
               width: 6
             }],
-            textData: data.paths[0].steps[0].instruction
+            textData: words
           });
         }
       })
@@ -393,12 +439,22 @@ Page({
           success: function (data) {
             //console.log(data);
             var points = [];
+            //console.log(data.paths[0].steps);
+            var words = data.paths[0].steps[0].instruction;
+            if (words.length > _this.data.wordsCount ) {
+              _this.setData({
+                guideInfoHeight: '60px'
+              });
+            } else {
+              _this.setData({
+                guideInfoHeight: '30px'
+              });
+            }
             _this.setData({
-              textData: data.paths[0].steps[0].instruction
+              textData: words
             });
-            console.log(data.paths[0].steps);
           }
-        })
+        });
       },
       fail: function (err) {
         console.log(err);
@@ -430,7 +486,7 @@ Page({
   startItv: function (e) {
     var _this = this;
     this.setData({
-      itv: setInterval(_this.getAllLocation,2000)
+      itv: setInterval(_this.getAllLocation,_this.data.second)
     });
   },
 
@@ -442,7 +498,7 @@ Page({
   },
 
   changeItv: function (e) {
-    console.log(changeItv);
+    //console.log(changeItv);
       if (!changeItv) {
         this.stopItv();
         changeItv = true;
@@ -451,4 +507,5 @@ Page({
         changeItv = false;
       }
   }
+
 })

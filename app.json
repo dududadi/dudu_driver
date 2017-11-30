@@ -4,9 +4,8 @@
     "pages/register/register",
     "pages/logs/logs",
     "pages/main/main",
-    "pages/go/go",
     "pages/receive_order/receive_order",
-    "pages/wallet/wallet",
+    "pages/go/go",
     "pages/order/order"
   ],
   "window":{
