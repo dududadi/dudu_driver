@@ -6,6 +6,7 @@
     "pages/main/main",
     "pages/go/go",
     "pages/receive_order/receive_order",
+    "pages/wallet/wallet",
     "pages/order/order"
   ],
   "window":{

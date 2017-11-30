@@ -135,6 +135,14 @@ Page({
     }
   },
 
+  //我的钱包按钮
+  myWallet: function (e) {
+    console.log(e);
+    wx.navigateTo({
+      url: '../wallet/wallet'
+    })
+  },
+
   //历史订单按钮
   myOrder: function (e) {
     wx.navigateTo({
