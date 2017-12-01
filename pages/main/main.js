@@ -117,7 +117,7 @@ Page({
     var latitude = this.data.driv_latitude;
     var longitude = this.data.driv_longitude;
     if (this.data.status) {
-      wx.redirectTo({
+      wx.navigateTo({
           url: '/pages/receive_order/receive_order?driv_openid='+driv_open_id+'&driv_longitude='+longitude+'&driv_latitude='+latitude //进入出车接单界面
       });
     } else {
@@ -148,5 +148,12 @@ Page({
     wx.navigateTo({
       url: '../order/order?openid=' + wx.getStorageSync('openid')
     })
+  },
+
+  //指南按钮
+  guide: function (e) {
+    // wx.navigateTo({
+    //   url: '../order/order?openid=' + wx.getStorageSync('openid')
+    // })
   }
 })

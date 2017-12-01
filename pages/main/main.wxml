@@ -15,7 +15,7 @@
         <text class="iconfont icon-qianbao"></text>
         <text>钱包</text>
       </view>
-      <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+      <view bindtap="guide" class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
         <text class="iconfont icon-guide"></text>
         <text>指南</text>
       </view>

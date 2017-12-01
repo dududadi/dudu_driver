@@ -172,17 +172,17 @@ Page({
         success: function (res) {
           console.log(res);
           res = res.data;
-          if (res == 0) {
+          if (res === 0) {
             wx.hideLoading();
             wx.showLoading({
               title: '该单已过期',
             });
             setTimeout(wx.hideLoading, 1000);
           } else {
+            _this.stopItv();
             wx.redirectTo({
               url: '/pages/go/go?user_openid=' + user_openid + '&sSite=' + sLongitude + ',' + sLatitude + '&eSite=' + eLongitude + ',' + eLatitude + '&driv_longitude=' + _this.data.driv_longitude + '&driv_latitude=' + _this.data.driv_latitude + '&sLongitude=' + sLongitude + '&sLatitude=' + sLatitude + '&eLongitude=' + eLongitude + '&eLatitude=' + eLatitude + '&sName=' + sName + '&eName=' + eName, //进入接单页面
               success: function () {
-                _this.stopItv();
                 wx.hideLoading();
               }
             });
@@ -190,6 +190,7 @@ Page({
         },
         fail: function (err) {
           console.log(err);
+          _this.stopItv();
         }
       })
 
@@ -217,7 +218,6 @@ Page({
            _this.setData({
               orderList: data
            });
-          console.log(_this.data.orderList);
           console.log(_this.data.driv_longitude,_this.data.driv_latitude);
         },
         fail: function (err) {

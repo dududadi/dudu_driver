@@ -3,10 +3,10 @@ var amapFile = require('../../libs/AMapWX_SDK_V1.2.1/amap-wx.js');
 var config = require('../../libs/config.js');
 var myAmapFun = new amapFile.AMapWX({key: config.Config.key});
 var step = 2; //位置信息获取步骤
-var changeItv = false;
+var changeItvStatus = false;
 var launch_status = false;
 var pointArr = []; //记录司机走过的点
-var sec = 0; //用于记录
+var sec = 0; //用于控制每五秒发送一次位置信息
 //获取应用实例
 Page({
   /**
@@ -45,7 +45,9 @@ Page({
     dpr: '',
     wordsContentW: '',
     wordsCount: '',
-    margin: ''
+    margin: '',
+    moneyItv: '',
+    hasMoneyTips: false
   },
 
   /**
@@ -103,9 +105,7 @@ Page({
   onReady: function () {
     var _this = this;
     this.getAllLocation();
-    this.setData({
-      itv: setInterval(_this.getAllLocation,_this.data.second)
-    });
+    this.startItv();
   },
 
   /**
@@ -237,10 +237,14 @@ Page({
               btnTip: '确认乘客到达终点',
               confirmBtnStyle: 'arrive-now'
             });
-            _this.setData({
-              itv: setInterval(_this.launch,1000)
-            });
+            _this.startItv = function () {
+              var _this = this;
+              _this.setData({
+                itv: setInterval(_this.launch,1000)
+              });
+            };
             launch_status = true;
+            _this.startItv();
           } else {
             wx.showModal({
               title: '提示',
@@ -264,28 +268,20 @@ Page({
         }
       });
     } else {
-      wx.showLoading({
-      title: '等待订单结算中',
-    });
       wx.request({
         url: 'https://www.forhyj.cn/miniapp/Driver/arrive',
         method: 'POST',
         data: {
-          openid: _this.data.orderId
+          orderId: _this.data.orderId
         },
         success: function (res) {
           if (res.data) {
-            wx.hideLoading();
-            wx.showToast({
-              title: '结算成功',
-              icon: 'success',
-              duration: 1000
-            });
+            _this.moneyItv();
           } else {
             wx.hideLoading();
             wx.showModal({
               title: '提示',
-              content: '操作出错，请联系客服！',
+              content: '结算出错，请联系客服！',
               showCancel: false,
               success: function(res) {
                 if (res.confirm) {
@@ -309,7 +305,7 @@ Page({
   cancelOrder: function (e) {
     var _this = this;
     wx.showLoading({
-      title: '加载中...',
+      title: '取消中...',
     });
     this.stopItv();
     wx.request({
@@ -324,7 +320,7 @@ Page({
             title: '取消成功！',
             icon: 'success',
             duration: 1000
-          })
+          });
           wx.redirectTo({
             url: '/pages/receive_order/receive_order'
           });
@@ -332,13 +328,9 @@ Page({
           wx.showModal({
             title: '提示',
             content: '取消出错，请联系客服！',
+            showCancel: false,
             success: function(res) {
               if (res.confirm) {
-                wx.redirectTo({
-                  url: '/pages/receive_order/receive_order'
-                });
-              } else if (res.cancel) {
-                _this.stopItv();
                 wx.redirectTo({
                   url: '/pages/receive_order/receive_order'
                 });
@@ -443,11 +435,13 @@ Page({
             var words = data.paths[0].steps[0].instruction;
             if (words.length > _this.data.wordsCount ) {
               _this.setData({
-                guideInfoHeight: '60px'
+                guideInfoHeight: '60px',
+                style_top: '30px'
               });
             } else {
               _this.setData({
-                guideInfoHeight: '30px'
+                guideInfoHeight: '30px',
+                style_top: '60px'
               });
             }
             _this.setData({
@@ -475,7 +469,7 @@ Page({
       },
       method: 'POST',
       success: function (res) {
-        console.log(res);
+        //console.log(res);
       },
       fail: function (err) {
         console.log(err);
@@ -498,14 +492,51 @@ Page({
   },
 
   changeItv: function (e) {
-    //console.log(changeItv);
-      if (!changeItv) {
+    //console.log(changeItvStatus);
+      if (!changeItvStatus) {
         this.stopItv();
-        changeItv = true;
+        changeItvStatus = true;
       } else {
         this.startItv();
-        changeItv = false;
+        changeItvStatus = false;
       }
+  },
+
+  moneyItv: function () {
+    console.log('等待结算中');
+    var _this = this;
+    if (!this.data.hasMoneyTips) {
+      wx.showLoading({
+        title: '等待结算中',
+      });
+      this.setData({
+        hasMoneyTips: true
+      });
+    }
+    wx.request({
+      url: 'https://www.forhyj.cn/miniapp/Driver/xxx',
+      method: 'POST',
+      data: {orderId: _this.data.orderId},
+      success: function (res) {
+        if (!res) {
+          console.log("请求结算结果");
+          setTimeout(_this.moneyItv, 1000);
+        } else {
+          wx.hideLoading();
+          wx.showToast({
+            title: '结算成功！',
+            icon: 'success',
+            duration: 3000
+          });
+          wx.redirectTo({
+            url: '/pages/receive_order/receive_order'
+          });
+        }
+      },
+      fail:function (err) {
+        console.log(err);
+      }
+    });
   }
 
 })
