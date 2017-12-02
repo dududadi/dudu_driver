@@ -6,7 +6,9 @@
     "pages/main/main",
     "pages/receive_order/receive_order",
     "pages/go/go",
-    "pages/order/order"
+    "pages/order/order",
+    "pages/wallet/wallet",
+    "pages/bill/bill"
   ],
   "window":{
     "backgroundTextStyle":"light",

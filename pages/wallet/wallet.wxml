@@ -1,0 +1,14 @@
+<view>
+  <view style='text-align:center'>
+    <image style='height:700rpx;weight:300rpx'  src='../../imgs/wallet.png'></image>
+  </view>
+  <view style='text-align:center'>
+    <text>我的余额:{{monney}}</text>
+  </view>
+  <view style='margin-top:50rpx'>
+    <button class='btn_charge' bindtap='payment'>钱包充值</button>
+  </view>
+  <view>
+    <button class='btn_bill' bindtap='myBill'>我的账单</button>
+  </view>
+</view>

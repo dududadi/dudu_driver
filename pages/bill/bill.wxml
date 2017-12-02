@@ -1,0 +1,18 @@
+<view>
+  <view class='bill_nav'>
+    <text style='margin-left:20rpx '>账单：</text>
+  </view>
+  <view class='bill_content'>
+    <view>
+      <view class='bill'>
+        <view wx:for="{{res}}">
+          <text>消费对象</text>
+          <text style='float:right'>+{{money}}</text>
+        </view>
+        <view>
+          <text>时间：{{time}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
