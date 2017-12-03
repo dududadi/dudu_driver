@@ -515,11 +515,11 @@ Page({
       });
     }
     wx.request({
-      url: 'https://www.forhyj.cn/miniapp/Driver/xxx',
+      url: 'https://www.forhyj.cn/miniapp/Driver/checkOlsId',
       method: 'POST',
       data: {orderId: _this.data.orderId},
       success: function (res) {
-        if (!res) {
+        if (!res.data) {
           console.log("请求结算结果");
           setTimeout(_this.moneyItv, 1000);
         } else {
