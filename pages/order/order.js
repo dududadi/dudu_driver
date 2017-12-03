@@ -3,6 +3,21 @@ Page({
     toView: 'red',
     scrollTop: 0
   },
+  checkMap: function () {
+      wx.redirectTo({
+          url: '../map/map'
+      })
+  },
+  goPay: function () {
+      wx.redirectTo({
+          url: '../pay/pay'
+      })
+  },
+  goComment: function () {
+      wx.redirectTo({
+          url: '../comment/comment'
+      })
+  },
   tap: function (e) {
     for (var i = 0; i < order.length; ++i) {
       if (order[i] === this.data.toView) {

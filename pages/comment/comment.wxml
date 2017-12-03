@@ -1,0 +1,17 @@
+<view style='width:100%'>
+    <form bindsubmit="bindFormSubmit">
+        <view class='tip'>
+            请您对这次出行做出评价
+        </view>
+        <view class='star-view'>
+            <block wx:for="{{stars}}">
+                <image class="star-image" style="width:80rpx;height:80rpx;left: {{item*100}}rpx" src="{{key > item ?(key-item == 0.5?halfSrc:selectedSrc) : normalSrc}}">
+                    <view class="item" style="left:0rpx" data-key="{{item+0.5}}" bindtap="selectLeft"></view>
+                    <view class="item" style="left:40rpx" data-key="{{item+1}}" bindtap="selectRight"></view>
+                </image>
+            </block>
+        </view>
+        <textarea placeholder="请输入文字评价" focus="{{focus}}" name="textarea" value="{{comment}}" bindinput='inputComment'/>
+        <button bindtap='submitComment'> 提交 </button>
+    </form>
+</view>
