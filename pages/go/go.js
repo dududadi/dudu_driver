@@ -228,7 +228,6 @@ Page({
           openid: _this.data.driv_open_id
         },
         success: function (res) {
-          wx.setStorageSync('orderId', res.data);
           if (res.data) {
             _this.setData({
               orderId: res.data,

@@ -33,9 +33,12 @@
         <view class="tr"><view class="tdl">小费：</view><view class="tdr">{{item.tips}}</view></view>
     </scroll-view>
     <view class='order-footer'>
-      <button bindtap='checkMap' wx:if='{{item.olsName == "未接客"}}' class='footer-btn'>查看用户位置</button>
-      <button bindtap='checkMap' wx:elif='{{item.olsName == "未过期"}}' class='footer-btn'>查看当前位置</button>
-      <button bindtap='goComment' wx:else='{{item.olsName == "已支付"}}' class='footer-btn'>评价用户</button>
+      <button bindtap='checkMap'  wx:if='{{item.olsName == "未接客"}}' class='footer-btn'>查看用户位置</button>
+      <button bindtap='checkMap'  wx:elif='{{item.olsName == "未过期"}}' class='footer-btn'>查看当前位置</button>
+      <label  wx:elif='{{item.olsName == "已过期" || item.olsName == "未支付"}}' class='footer-btn'></label>
+      <button id='{{item.orderId}}' bindtap='goComment' wx:elif='{{item.olsName == "已支付"}}'  class='footer-btn'>评价用户</button>
+      <button id='{{item.orderId}}' bindtap='goComment' wx:elif='{{item.olsName == "用户已评价"}}'  class='footer-btn'>评价用户</button>
+      <button id='{{item.orderId}}' bindtap='checkComment' wx:else class='footer-btn' >查看评价</button>
     </view>
   </view>
   </view>

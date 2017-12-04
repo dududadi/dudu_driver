@@ -13,9 +13,17 @@ Page({
           url: '../pay/pay'
       })
   },
-  goComment: function () {
+  checkComment:function(e){
       wx.redirectTo({
-          url: '../comment/comment'
+          url: '../comment_view/comment_view'
+      })
+  },
+  goComment: function (event) {
+      var orderId = event.target.id;
+      console.log(event);
+      console.log(orderId);
+      wx.redirectTo({
+          url: '../comment/comment?orderId='+orderId
       })
   },
   tap: function (e) {

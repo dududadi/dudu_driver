@@ -9,9 +9,14 @@ Page({
         selectedSrc: "../../imgs/star-full.png",
         halfSrc: "../../imgs/star-half-full.png",
         key: 0,//评分
-        comment:''//评价
+        comment:'',//评价
+        orderId:''
     },
-    onLoad: function () {
+    onLoad: function (e) {
+        console.log(e);
+        this.setData({
+            orderId: e.orderId
+        })
     },
     inputComment:function(e){
         this.setData({
@@ -21,11 +26,12 @@ Page({
     submitComment:function(){
         var comment = this.data.comment;
         var score = this.data.key;
+        var orderId = this.data.orderId;
         wx.request({
             url: 'https://www.forhyj.cn/miniapp/Driver/comment',
             data: {
                 driverOpenId: wx.getStorageSync('openid'),
-                orderId: wx.getStorageSync('orderId'),
+                orderId: orderId,
                 comment: comment,
                 score:score
             },

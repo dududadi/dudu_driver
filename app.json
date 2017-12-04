@@ -8,7 +8,8 @@
     "pages/go/go",
     "pages/order/order",
     "pages/wallet/wallet",
-    "pages/bill/bill"
+    "pages/bill/bill",
+    "pages/comment/comment"
   ],
   "window":{
     "backgroundTextStyle":"light",
