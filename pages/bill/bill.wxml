@@ -3,14 +3,16 @@
     <text style='margin-left:20rpx '>账单：</text>
   </view>
   <view class='bill_content'>
-    <view>
-      <view class='bill'>
-        <view wx:for="{{res}}">
-          <text>消费对象</text>
-          <text style='float:right'>+{{money}}</text>
+    <view wx:if='{{resArr.length == 0}}' class='order-tips'>
+      <text>sorry,你还没有消费记录哦~</text>
+    </view>
+    <view wx:else>
+      <view class='bill 'wx:for="{{resArr}}" wx:key='{{item}}'>
+        <view>
+          <text style='float:right'>+{{item.dmrMoney}}</text>
         </view>
         <view>
-          <text>时间：{{time}}</text>
+          <text>时间：{{item.dmrTime}}</text>
         </view>
       </view>
     </view>

@@ -1,0 +1,38 @@
+<view >
+  <image class='guide_img' src='../../imgs/dudu.png' style='width:120%;margin-left:-10%;'></image>  
+</view>
+<view class='guide'>
+  <text class='line'>出行指南</text>
+</view>
+<view style='margin-top:20rpx'>
+  <view class='content'>
+    <view>
+      <text class='left'>起步费</text>
+      <text class='right'>14元</text>
+    </view>
+  </view>
+</view>
+<view style='margin-top:20rpx'>
+  <view class='content'>
+    <view>
+      <text class='left'>里程费</text>
+      <text class='right'>2.7元/公里</text>
+    </view>
+  </view>
+</view>
+<view style='margin-top:20rpx'>
+  <view class='content'>
+    <view>
+      <text class='left'>运途费</text>
+      <text class='right'>1元/一公里</text>
+    </view>
+  </view>
+</view>
+<view style='margin-top:20rpx'>
+  <view class='content'>
+    <view>
+      <text class='left'>等待费</text>
+      <text class='right'>1元/一分钟</text>
+    </view>
+  </view>
+</view>
