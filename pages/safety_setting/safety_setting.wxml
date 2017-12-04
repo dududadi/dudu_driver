@@ -1,0 +1,6 @@
+<view class="section">
+    <view class="section__title">修改手机号</view>
+    <input placeholder="请输入手机号" auto-focus bindinput='bindTel'/>
+    <input type="password" placeholder="输入登录密码" bindinput='bindPsw' maxlength='16'/>
+  <button bindtap='confirm'>确认修改</button>
+</view>

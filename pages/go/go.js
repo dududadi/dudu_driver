@@ -13,7 +13,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    style_show: 'block',
+    pathTip_show: 'block',
+    cancel_show: 'block',
+    confirm_show: 'none',
     style_top: '60px',
     guideInfoHeight: '30px',
     btnTip: '确认已接到乘客',
@@ -54,7 +56,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    /*console.log(options);*/
+    console.log(options);
     var _this = this;
     this.setData({
       user_openid: options.user_openid,
@@ -106,6 +108,11 @@ Page({
     var _this = this;
     this.getAllLocation();
     this.startItv();
+    setTimeout(function(){
+      _this.setData({
+        confirm_show: 'block'
+      });
+    },1200);
   },
 
   /**
@@ -183,7 +190,6 @@ Page({
         /*console.log(res.data);
         console.log(step);*/
         if (step === 1 && res.data) {
-          step = 2;
           console.log('得到用户位置');
           _this.setData({
             user_longitude: res.data.ul_longitude,
@@ -233,18 +239,18 @@ Page({
               orderId: res.data,
               behavior: 'go_destination',
               guideInfoHeight: '60px',
-              style_show: 'none',
+              cancel_show: 'none',
               btnTip: '确认乘客到达终点',
               confirmBtnStyle: 'arrive-now'
             });
             _this.startItv = function () {
               var _this = this;
+              _this.launch();
               _this.setData({
                 itv: setInterval(_this.launch,1000)
               });
             };
             launch_status = true;
-            _this.startItv();
           } else {
             wx.showModal({
               title: '提示',
@@ -351,56 +357,55 @@ Page({
     var _this = this;
     /*console.log(_this.data.driv_location, _this.data.user_location);
     console.log(step);*/
-    if (step === 2) {
-      console.log('开始绘图');
-      step = 0;
-      myAmapFun.getDrivingRoute({
-        origin: _this.data.driv_location,
-        destination: _this.data.user_location,
-        success: function (data) {
+    console.log('开始绘图');
+    step = 0;
+    myAmapFun.getDrivingRoute({
+      origin: _this.data.driv_location,
+      destination: _this.data.user_location,
+      success: function (data) {
 
-          //console.log(data);
-          var points = [];
+        //console.log(data);
+        var points = [];
 
-          if (data.paths && data.paths[0] && data.paths[0].steps) {
-            var steps = data.paths[0].steps;
-            for (var i = 0; i < steps.length; i++) {
-              var poLen = steps[i].polyline.split(';');
-              for (var j = 0; j < poLen.length; j++) {
-                points.push({
-                  longitude: parseFloat(poLen[j].split(',')[0]),
-                  latitude: parseFloat(poLen[j].split(',')[1])
-                })
-              }
+        if (data.paths && data.paths[0] && data.paths[0].steps) {
+          var steps = data.paths[0].steps;
+          for (var i = 0; i < steps.length; i++) {
+            var poLen = steps[i].polyline.split(';');
+            for (var j = 0; j < poLen.length; j++) {
+              points.push({
+                longitude: parseFloat(poLen[j].split(',')[0]),
+                latitude: parseFloat(poLen[j].split(',')[1])
+              })
             }
           }
-          var words = data.paths[0].steps[0].instruction;
-          if (words.length > _this.data.wordsCount ) {
-            _this.setData({
-              style_show: 'none',
-              guideInfoHeight: '60px'
-            });
-          } else {
-            _this.setData({
-              style_show: 'block',
-              guideInfoHeight: '30px'
-            });
-          }
+        }
+        var words = data.paths[0].steps[0].instruction;
+        if (words.length > _this.data.wordsCount ) {
           _this.setData({
-            polyline: [{
-              points: points,
-              color: "#0091ff",
-              width: 6
-            }],
-            textData: words
+            pathTip_show: 'none',
+            guideInfoHeight: '60px'
+          });
+        } else {
+          _this.setData({
+            pathTip_show: 'block',
+            guideInfoHeight: '30px'
           });
         }
-      })
-    }
+        _this.setData({
+          polyline: [{
+            points: points,
+            color: "#0091ff",
+            width: 6
+          }],
+          textData: words
+        });
+      }
+    })
   },
 
 
   launch: function () {
+    console.log("发车");
     var _this = this;
     wx.getLocation({
       type: 'gcj02',
@@ -426,7 +431,7 @@ Page({
 
         //获取司机位置到终点的导航信息
         myAmapFun.getDrivingRoute({
-          origin: _this.data.driv_location,
+          origin: res.longitude + ',' + res.latitude,
           destination: _this.data.eSite,
           success: function (data) {
             //console.log(data);
@@ -518,7 +523,7 @@ Page({
       method: 'POST',
       data: {orderId: _this.data.orderId},
       success: function (res) {
-        if (!res.data) {
+         if (!res.data) {
           console.log("请求结算结果");
           setTimeout(_this.moneyItv, 1000);
         } else {

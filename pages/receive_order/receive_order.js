@@ -9,43 +9,7 @@ Page({
       driv_latitude: '',
       driv_longitude: '',
       itv: '',
-      orderList:[
-        {
-          open_id: 'o7r8T0XJAc4FSyQjVK_VJ-FhGppY', //乘客open_id
-          oh_create_time: '2017-11-25 10:09:18', //下单时间
-          oh_start_name: '起点', //乘车起点
-          oh_start_longitude: "119.261", //起点经度
-          oh_start_latitude: "26.0778", //起点纬度
-          oh_end_name: '终点', //乘车终点
-          oh_end_longitude: "119.231", //终点经度
-          oh_end_latitude: "26.0773", //终点纬度
-          oh_km_num: 11.20 //两地路程距离
-        },
-        {
-          open_id: 2,
-          oh_start_name: '起点',
-          oh_end_name: '终点',
-          oh_km_num: 9.05
-        },
-        {
-          open_id: 3,
-          oh_start_name: '起点',
-          oh_end_name: '终点',
-          oh_km_num: 24.00
-        },
-        {
-          open_id: 4,
-          oh_start_name: '起点',
-          oh_end_name: '终点',
-          oh_km_num: 5.29
-        },
-        {
-          open_id: 5,
-          oh_start_name: '起点',
-          oh_end_name: '终点',
-          oh_km_num: 6.66
-        }
-      ]
+      orderList:[]
     },
 
     /**

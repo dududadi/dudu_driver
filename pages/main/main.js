@@ -8,7 +8,7 @@ Page({
   data: {
     driv_latitude: '',
     driv_longitude: '',
-    status: true
+    status: false
   },
 
   /**
@@ -52,10 +52,12 @@ Page({
         });
       }
     });
-    /*wx.request({
-      url: 'https://www.forhyj.cn/miniapp/Driver/XXX',
+    wx.request({
+      url: 'https://www.forhyj.cn/miniapp/Driver/verify',
           method: 'POST',
+          data:{openId:wx.getStorageSync('openid')},
           success: function (res) {
+            //console.log(res.data);
             if (res.data) {
               //审核已通过
               _this.setData({
@@ -66,7 +68,7 @@ Page({
           fail: function (err) {
             console.log(err);
           }
-    });*/
+    });
   },
 
   /**
@@ -116,6 +118,7 @@ Page({
     var driv_open_id = wx.getStorageSync('openid');
     var latitude = this.data.driv_latitude;
     var longitude = this.data.driv_longitude;
+    console.log(this.data.status);
     if (this.data.status) {
       wx.navigateTo({
           url: '/pages/receive_order/receive_order?driv_openid='+driv_open_id+'&driv_longitude='+longitude+'&driv_latitude='+latitude //进入出车接单界面
@@ -155,5 +158,12 @@ Page({
     // wx.navigateTo({
     //   url: '../order/order?openid=' + wx.getStorageSync('openid')
     // })
+  },
+
+  //安全设置
+  safetySetting: function (e) {
+    wx.navigateTo({
+      url: '../safety_setting/safety_setting?openid=' + wx.getStorageSync('openid')
+    })
   }
 })

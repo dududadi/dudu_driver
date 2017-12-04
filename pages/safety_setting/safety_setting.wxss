@@ -1,0 +1,24 @@
+input, .datepicker, .label {
+    border: 1rpx gainsboro solid;
+    height: 80rpx;
+    line-height: 80rpx;
+    color: #777;
+    margin: 20rpx auto;
+    box-shadow: 2rpx 2rpx 8rpx lightgrey;
+}
+
+.section {
+    width: 700rpx;
+    margin: 10rpx auto;
+}
+
+.section__title{
+    text-align: center;
+}
+
+button {
+    width: 90%;
+    opacity: opacity;
+    color: white;
+    background-color: #ff8719;
+}
