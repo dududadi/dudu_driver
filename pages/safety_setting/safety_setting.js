@@ -28,7 +28,8 @@ Page({
 
         var data = {
           tel: this.data.tel,
-          psw: this.data.psw
+          psw: this.data.psw,
+          openId: wx.getStorageSync('openid')
         }
         //console.log(data);
         wx.request({
@@ -64,8 +65,8 @@ Page({
               })
             } else if (data == 11) {
               wx.showModal({
-                title: '未知错误',
-                content: '请联系管理员'
+                title: '修改失败',
+                content: '请确认密码是否输入正确'
               })
             }
           }

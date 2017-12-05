@@ -58,7 +58,7 @@ Page({
           data:{openId:wx.getStorageSync('openid')},
           success: function (res) {
             //console.log(res.data);
-            if (res.data) {
+            if (res.data === 1) {
               //审核已通过
               _this.setData({
                 status: true
@@ -118,10 +118,21 @@ Page({
     var driv_open_id = wx.getStorageSync('openid');
     var latitude = this.data.driv_latitude;
     var longitude = this.data.driv_longitude;
-    console.log(this.data.status);
+    // wx.request({
+    //   url: 'https://www.forhyj.cn/miniapp/Driver/getOnlineOrder',
+    //   method: 'POST',
+    //   data: {openId: wx.getStorageSync('openid')},
+    //   success: function (res) {
+    //     console.log(res.data);
+    //   },
+    //   fail: function (err) {
+    //     console.log(err);
+    //   }
+    // });
+
     if (this.data.status) {
       wx.navigateTo({
-          url: '/pages/receive_order/receive_order?driv_openid='+driv_open_id+'&driv_longitude='+longitude+'&driv_latitude='+latitude //进入出车接单界面
+          url: '/pages/receive_order/receive_order?driv_longitude='+longitude+'&driv_latitude='+latitude //进入出车接单界面
       });
     } else {
       wx.showModal({

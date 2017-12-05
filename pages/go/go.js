@@ -4,7 +4,7 @@ var config = require('../../libs/config.js');
 var myAmapFun = new amapFile.AMapWX({key: config.Config.key});
 var step = 2; //位置信息获取步骤
 var changeItvStatus = false;
-var launch_status = false;
+var launch_status = 0;
 var pointArr = []; //记录司机走过的点
 var sec = 0; //用于控制每五秒发送一次位置信息
 //获取应用实例
@@ -225,8 +225,8 @@ Page({
   //接到乘客按钮//乘客到站按钮
   received: function (e) {
     var _this = this;
-    this.stopItv();
-    if (!launch_status) {
+    if (launch_status === 0) {
+      this.stopItv();
       wx.request({
         url: 'https://www.forhyj.cn/miniapp/Driver/received',
         method: 'POST',
@@ -243,14 +243,21 @@ Page({
               btnTip: '确认乘客到达终点',
               confirmBtnStyle: 'arrive-now'
             });
-            _this.startItv = function () {
+
+            _this.startItv = function (e) {
               var _this = this;
-              _this.launch();
               _this.setData({
                 itv: setInterval(_this.launch,1000)
               });
-            };
-            launch_status = true;
+            },
+            _this.launch();
+            _this.startItv();
+
+            launch_status = -1;
+
+            setTimeout(function () {
+              launch_status = 1;
+            },5000);
           } else {
             wx.showModal({
               title: '提示',
@@ -259,7 +266,7 @@ Page({
               success: function(res) {
                 if (res.confirm) {
                   wx.redirectTo({
-                    url: '/pages/receive_order/receive_order'
+                    url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
                   });
                 }
               }
@@ -273,7 +280,8 @@ Page({
           'content-type': 'application/json' // 默认值
         }
       });
-    } else {
+    } else if (launch_status === 1) {
+      this.stopItv();
       wx.request({
         url: 'https://www.forhyj.cn/miniapp/Driver/arrive',
         method: 'POST',
@@ -292,7 +300,7 @@ Page({
               success: function(res) {
                 if (res.confirm) {
                   wx.redirectTo({
-                    url: '/pages/receive_order/receive_order'
+                    url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
                   });
                 }
               }
@@ -303,7 +311,13 @@ Page({
           console.log(err);
         }
       });
-    };
+    } else {
+      wx.showToast({
+        title: '请勿频繁操作',
+        image: '/imgs/alert.png',
+        duration: 1000
+      })
+    }
 
   },
 
@@ -328,7 +342,7 @@ Page({
             duration: 1000
           });
           wx.redirectTo({
-            url: '/pages/receive_order/receive_order'
+            url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
           });
         } else {
           wx.showModal({
@@ -338,7 +352,7 @@ Page({
             success: function(res) {
               if (res.confirm) {
                 wx.redirectTo({
-                  url: '/pages/receive_order/receive_order'
+                  url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
                 });
               }
             }
@@ -422,6 +436,9 @@ Page({
           _this.pushPoint(res.longitude,res.latitude);
         }
         _this.setData({
+          driv_latitude: res.latitude,
+          driv_longitude: res.longitude,
+          driv_location: res.longitude + ',' + res.latitude,
           polyline: [{
             points: pointArr,
             color: "#25A5F7",
@@ -531,11 +548,13 @@ Page({
           wx.showToast({
             title: '结算成功！',
             icon: 'success',
-            duration: 3000
+            duration: 2000
           });
-          wx.redirectTo({
-            url: '/pages/receive_order/receive_order'
-          });
+          setTimeout(function () {
+            wx.redirectTo({
+              url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
+            });
+          }, 2000)
         }
       },
       fail:function (err) {
