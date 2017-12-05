@@ -1,24 +1,26 @@
-.tdl, .tdr {
-    width: 25%;
-    /* background: red; */
-    justify-content: center;
-    text-align: right;
-    padding: 5rpx;
+.tdl, .tdr{
+  width: 25%;
+  /* background: red; */
+  justify-content: center;
+  text-align: right;
+  padding: 5rpx;
 }
 
-.tdr {
-    text-align: left;
-    width: 75%;
+.tdr{
+  text-align: left;
+  width: 75%;
 }
-.tr {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    height: 1.5rem;
-    /* background: green; */
-    align-items: center;
-    font-size: 14px;
+
+.tr{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  height: 1.5rem;
+  /* background: green; */
+  align-items: center;
+  font-size: 14px;
 }
+
 .order-tips{
   margin: 0 auto;
   width: 20rem;
@@ -32,12 +34,12 @@
 
 .order-border{
   margin: 0 auto;
-  border-top:1px solid #f8f8f8; 
+  border-top:1px solid #f8f8f8;
   width: 100%;
   height: 550rpx;
   /* background: #ffff66; */
-  box-shadow:0rpx 0rpx 800rpx #f2eada inset; 
-  border-bottom: 1px solid #d9d6c3; 
+  box-shadow:0rpx 0rpx 800rpx #f2eada inset;
+  border-bottom: 1px solid #d9d6c3;
 }
 
 .order-title{
@@ -46,6 +48,7 @@
   /* background: #ffcc33; */
   padding: 30rpx;
 }
+
 .order-title>view{
   display: inline-block;
   vertical-align: middle;
@@ -62,6 +65,7 @@
   font-size: 15px;
   line-height: 20px;
 }
+
 .title-info>text{
   display: block;
 }
@@ -73,13 +77,12 @@
   color: #333;
 }
 
-
 .order-footer{
   width: 100%;
   height: 100rpx;
   line-height: 100rpx;
 }
- 
+
 .footer-btn{
   width: 200rpx;
   height: 60rpx;
@@ -92,4 +95,56 @@
 .icon{
   width: 40px;
   height: 40px;
+}
+
+.comment-shade{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  z-index: 10;
+}
+
+.comment-box{
+  position: fixed;
+  left: 13%;
+  top: 10%;
+  width: 74%;
+  max-height: 74%;
+  padding: 3% 0;
+  box-shadow: 0px 0px 6px #fff;
+  background-color: #fff;
+  z-index: 11;
+  font-size: 28rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-close{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+}
+
+.comment-time{
+  height: 20px;
+  line-height: 20px;
+  padding-bottom: 14px;
+  margin: 10px 14px 12px;
+  border-bottom: 1px solid #efefef;
+}
+
+.comment-score{
+  margin: 0 14px 15px;
+}
+
+.comment-text{
+  margin: 0 14px;
+  height: 100%;
+  overflow-y: auto;
+  line-height: 1.5;
 }

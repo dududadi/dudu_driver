@@ -1,0 +1,52 @@
+page {
+    background-color: #fafafa;
+}
+
+.head {
+    border-bottom: 2rpx solid #e5e5e5;
+    color: #727272;
+    height: 70rpx;
+    text-align: center;
+    line-height: 70rpx;
+    font-size: 25rpx;
+}
+
+.type {
+    border-bottom: 2rpx solid #e5e5e5;
+    background-color: #fff;
+    color: #333;
+    height: 90rpx;
+    text-align: center;
+    line-height: 90rpx;
+    font-size: 28rpx;
+}
+
+.content {
+    width: 80%; 
+    min-height: 300rpx;
+    font-size: 30rpx;
+    padding: 3%;
+    line-height: 44rpx;
+    color: #878787;
+}
+
+.counter {
+    color: #878787;
+    text-align: center;
+    font-size: 25rpx;
+    width: 20%;
+    line-height: 300rpx;
+}
+
+.button {
+    margin: 50rpx;
+    background-color: #F58925;
+    color: #fff;
+}
+
+.disabledButton {
+    margin: 50rpx;
+    background-color: #e5e5e5;
+    color: #e5e5e5;
+}
+

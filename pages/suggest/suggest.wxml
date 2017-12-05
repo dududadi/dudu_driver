@@ -1,0 +1,14 @@
+<view class="head">我的反馈</view>
+<view class="type">
+    <picker mode="selector" range="{{array}}" value="{{index}}" bindchange="listenerPickerSelected">
+        <text wx:if="{{array[index] != null}}">{{array[index]}}</text>
+        <text wx:else>请选择问题类型</text>
+    </picker>
+</view>
+<view style='display:flex;flex-direction: row;'>
+    <textarea class='content' bindinput="enter" auto-height='true' maxlength="300" placeholder='您的建议与反馈是我们前进的动力'></textarea>
+    <view class='counter'>{{count}} / 300</view>
+</view>
+
+<button type='button' class='{{buttonClass}}' disabled='{{disabled}}' bindtap='sendMessage'>发送</button>
+

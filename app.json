@@ -2,6 +2,7 @@
   "pages":[
     "pages/index/index",
     "pages/register/register",
+    "pages/suggest/suggest",
     "pages/logs/logs",
     "pages/main/main",
     "pages/receive_order/receive_order",

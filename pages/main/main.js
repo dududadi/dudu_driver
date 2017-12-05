@@ -163,7 +163,13 @@ Page({
       url: '../order/order?openid=' + wx.getStorageSync('openid')
     })
   },
-
+  //建议
+  suggest: function (e) {
+      console.log(e);
+      wx.navigateTo({
+          url: '../suggest/suggest'
+      })
+  },
   //指南按钮
   guide: function (e) {
     // wx.navigateTo({

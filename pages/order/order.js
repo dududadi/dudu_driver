@@ -1,22 +1,11 @@
 Page({
   data: {
     toView: 'red',
-    scrollTop: 0
-  },
-  checkMap: function () {
-      wx.redirectTo({
-          url: '../map/map'
-      })
-  },
-  goPay: function () {
-      wx.redirectTo({
-          url: '../pay/pay'
-      })
-  },
-  checkComment:function(e){
-      wx.redirectTo({
-          url: '../comment_view/comment_view'
-      })
+    scrollTop: 0,
+    commentShow: 'none',
+    commentTime: '',
+    commentScore: '',
+    commentText: ''
   },
   goComment: function (event) {
       var orderId = event.target.id;
@@ -40,6 +29,32 @@ Page({
     this.setData({
       scrollTop: this.data.scrollTop + 10
     })
+  },
+  //查看评分信息
+  checkComment: function (e) {
+    var that = this;
+    var orderId = e.target.id;
+    var that = this;
+    wx.request({
+      url: 'https://www.forhyj.cn/miniapp/driver/getOrderComment',
+      method: 'POST',
+      data: {orderId: orderId},
+      success: function (res) {
+        console.log(res.data);
+        that.setData({
+          commentTime: res.data.cdtu_time,
+          commentScore: res.data.cdtu_score,
+          commentText: res.data.cdtu_content,
+          commentShow: 'block'
+        });
+      }
+    });
+  },
+  //关闭评分信息
+  closeComment: function (e) {
+    this.setData({
+      commentShow: 'none'
+    });
   },
   onLoad:function (location) {
     var wxopid=location.openid;

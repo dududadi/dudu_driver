@@ -34,7 +34,7 @@
         <text>客服</text>
       </contact-button>
     </view>
-    <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
+    <view bindtap="suggest" class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
       <text class="iconfont icon-suggest"></text>
       <text>意见&建议</text>
     </view>
