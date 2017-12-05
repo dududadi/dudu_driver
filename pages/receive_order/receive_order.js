@@ -18,7 +18,7 @@ Page({
     onLoad: function (options) {
       var _this = this;
       this.setData({
-        driv_open_id: options.driv_openid, //司机open_id
+        driv_open_id: wx.getStorageSync('openid'), //司机open_id
         driv_longitude: options.driv_longitude,
         driv_latitude: options.driv_latitude
       });
