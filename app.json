@@ -11,7 +11,8 @@
     "pages/wallet/wallet",
     "pages/bill/bill",
     "pages/comment/comment",
-    "pages/safety_setting/safety_setting"
+    "pages/safety_setting/safety_setting",
+    "pages/guide/guide"
   ],
   "window":{
     "backgroundTextStyle":"light",

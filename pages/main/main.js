@@ -172,9 +172,9 @@ Page({
   },
   //指南按钮
   guide: function (e) {
-    // wx.navigateTo({
-    //   url: '../order/order?openid=' + wx.getStorageSync('openid')
-    // })
+    wx.navigateTo({
+      url: '../guide/guide'
+    })
   },
 
   //安全设置

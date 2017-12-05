@@ -1,5 +1,5 @@
 <view >
-  <image class='guide_img' src='../../imgs/dudu.png' style='width:120%;margin-left:-10%;'></image>  
+  <image class='guide_img' src='https://static.xiaojukeji.com/gulfstream/upload/2015/20150819/carLevel_600/carlevel_large.png' style='width:120%;margin-left:-10%;'></image>  
 </view>
 <view class='guide'>
   <text class='line'>出行指南</text>
