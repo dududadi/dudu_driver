@@ -2,11 +2,7 @@
 var amapFile = require('../../libs/AMapWX_SDK_V1.2.1/amap-wx.js');
 var config = require('../../libs/config.js');
 var myAmapFun = new amapFile.AMapWX({key: config.Config.key});
-var step = 2; //位置信息获取步骤
-var changeItvStatus = false;
-var launch_status = 0;
-var pointArr = []; //记录司机走过的点
-var sec = 0; //用于控制每五秒发送一次位置信息
+
 //获取应用实例
 Page({
   /**
@@ -49,7 +45,12 @@ Page({
     wordsCount: '',
     margin: '',
     moneyItv: '',
-    hasMoneyTips: false
+    hasMoneyTips: false,
+    step: 2, //位置信息获取步骤
+    changeItvStatus: false,
+    launch_status: 0,
+    pointArr: [], //记录司机走过的点
+    sec: 0 //用于控制每五秒发送一次位置信息
   },
 
   /**
@@ -90,7 +91,7 @@ Page({
         var wordsCount = parseInt(screenW*dpr/_this.data.size);
         var wordsContentW = wordsCount*_this.data.size/dpr;
         var remain = (screenW - wordsContentW)/2;
-        //console.log(wordsCount,wordsContentW);
+        console.log(wordsCount,wordsContentW);
         _this.setData({
           wordsContentW: wordsContentW,
           dpr: dpr,
@@ -133,7 +134,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    this.stopItv();
   },
 
   /**
@@ -160,7 +161,7 @@ Page({
   //获取当前司机位置
   getDriverLocation: function () {
     var _this = this;
-    step = 1;
+    this.setData({step: 1});
     wx.getLocation({
       type: 'gcj02',
       success: function (res) {
@@ -189,7 +190,7 @@ Page({
       success: function (res) {
         /*console.log(res.data);
         console.log(step);*/
-        if (step === 1 && res.data) {
+        if (_this.data.step === 1 && res.data) {
           console.log('得到用户位置');
           _this.setData({
             user_longitude: res.data.ul_longitude,
@@ -220,105 +221,6 @@ Page({
     var _this = this;
     this.getDriverLocation();
     this.getUserLocation();
-  },
-
-  //接到乘客按钮//乘客到站按钮
-  received: function (e) {
-    var _this = this;
-    if (launch_status === 0) {
-      this.stopItv();
-      wx.request({
-        url: 'https://www.forhyj.cn/miniapp/Driver/received',
-        method: 'POST',
-        data: {
-          openid: _this.data.driv_open_id
-        },
-        success: function (res) {
-          if (res.data) {
-            _this.setData({
-              orderId: res.data,
-              behavior: 'go_destination',
-              guideInfoHeight: '60px',
-              cancel_show: 'none',
-              btnTip: '确认乘客到达终点',
-              confirmBtnStyle: 'arrive-now'
-            });
-
-            _this.startItv = function (e) {
-              var _this = this;
-              _this.setData({
-                itv: setInterval(_this.launch,1000)
-              });
-            },
-            _this.launch();
-            _this.startItv();
-
-            launch_status = -1;
-
-            setTimeout(function () {
-              launch_status = 1;
-            },5000);
-          } else {
-            wx.showModal({
-              title: '提示',
-              content: '操作出错，请联系客服！',
-              showCancel: false,
-              success: function(res) {
-                if (res.confirm) {
-                  wx.redirectTo({
-                    url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
-                  });
-                }
-              }
-            });
-          }
-        },
-        fail: function (err) {
-          console.log(err);
-        },
-        header: {
-          'content-type': 'application/json' // 默认值
-        }
-      });
-    } else if (launch_status === 1) {
-      this.stopItv();
-      wx.request({
-        url: 'https://www.forhyj.cn/miniapp/Driver/arrive',
-        method: 'POST',
-        data: {
-          orderId: _this.data.orderId
-        },
-        success: function (res) {
-          if (res.data) {
-            _this.moneyItv();
-          } else {
-            wx.hideLoading();
-            wx.showModal({
-              title: '提示',
-              content: '结算出错，请联系客服！',
-              showCancel: false,
-              success: function(res) {
-                if (res.confirm) {
-                  wx.redirectTo({
-                    url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
-                  });
-                }
-              }
-            });
-          }
-        },
-        fail: function (err) {
-          console.log(err);
-        }
-      });
-    } else {
-      wx.showToast({
-        title: '请勿频繁操作',
-        image: '/imgs/alert.png',
-        duration: 1000
-      })
-    }
-
   },
 
   //司机取消订单
@@ -372,7 +274,7 @@ Page({
     /*console.log(_this.data.driv_location, _this.data.user_location);
     console.log(step);*/
     console.log('开始绘图');
-    step = 0;
+    this.setData({step: 0});
     myAmapFun.getDrivingRoute({
       origin: _this.data.driv_location,
       destination: _this.data.user_location,
@@ -425,11 +327,18 @@ Page({
       type: 'gcj02',
       success: function (res) {
         /*console.log(res);*/
+        var sec = _this.data.sec;
         sec++;
+        var pointArr = _this.data.pointArr;
         pointArr.push({
           longitude: res.longitude,
           latitude: res.latitude
         });
+        _this.setData({
+          pointArr: pointArr,
+          sec: sec
+        });
+
         if (sec%5 === 0) {
           //每5秒发送一次
           console.log('发送位置中...');
@@ -443,7 +352,17 @@ Page({
             points: pointArr,
             color: "#25A5F7",
             width: 6
-          }]
+          }],
+          markers: [
+              {
+                iconPath: "../../imgs/marker_checked.png",
+                id: 1,
+                latitude: res.latitude,
+                longitude: res.longitude,
+                width: 23,
+                height: 33
+              }
+            ]
         });
 
         //获取司机位置到终点的导航信息
@@ -515,13 +434,121 @@ Page({
 
   changeItv: function (e) {
     //console.log(changeItvStatus);
-      if (!changeItvStatus) {
+      if (!this.data.changeItvStatus) {
         this.stopItv();
-        changeItvStatus = true;
+        this.setData({
+          changeItvStatus: true
+        });
       } else {
         this.startItv();
-        changeItvStatus = false;
+        this.setData({
+          changeItvStatus: false
+        });
       }
+  },
+
+  //接到乘客按钮//乘客到站按钮
+  received: function (e) {
+    var _this = this;
+    if (this.data.launch_status === 0) {
+      console.log("launch_status："+this.data.launch_status);
+      this.stopItv();
+      wx.request({
+        url: 'https://www.forhyj.cn/miniapp/Driver/received',
+        method: 'POST',
+        data: {
+          openid: _this.data.driv_open_id
+        },
+        success: function (res) {
+          if (res.data) {
+            _this.setData({
+              orderId: res.data,
+              behavior: 'go_destination',
+              guideInfoHeight: '60px',
+              cancel_show: 'none',
+              pathTip_show: 'none',
+              btnTip: '确认乘客到达终点',
+              confirmBtnStyle: 'arrive-now',
+              launch_status: -1
+            });
+
+            _this.startItv = function (e) {
+              var _this = this;
+              _this.setData({
+                itv: setInterval(_this.launch,1000)
+              });
+            },
+            _this.launch();
+            _this.startItv();
+
+
+
+            setTimeout(function () {
+              _this.setData({
+                launch_status: 1
+              });
+            },5000);
+          } else {
+            wx.showModal({
+              title: '提示',
+              content: '操作出错，请联系客服！',
+              showCancel: false,
+              success: function(res) {
+                if (res.confirm) {
+                  wx.redirectTo({
+                    url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
+                  });
+                }
+              }
+            });
+          }
+        },
+        fail: function (err) {
+          console.log(err);
+        },
+        header: {
+          'content-type': 'application/json' // 默认值
+        }
+      });
+    } else if (_this.data.launch_status === 1) {
+      this.stopItv();
+      wx.request({
+        url: 'https://www.forhyj.cn/miniapp/Driver/arrive',
+        method: 'POST',
+        data: {
+          orderId: _this.data.orderId
+        },
+        success: function (res) {
+          if (res.data) {
+            _this.moneyItv();
+          } else {
+            wx.hideLoading();
+            wx.showModal({
+              title: '提示',
+              content: '结算出错，请联系客服！',
+              showCancel: false,
+              success: function(res) {
+                if (res.confirm) {
+                  wx.redirectTo({
+                    url: '/pages/receive_order/receive_order?driv_longitude=' + _this.data.driv_longitude+'&driv_latitude=' + _this.data.latitude
+                  });
+                }
+              }
+            });
+          }
+        },
+        fail: function (err) {
+          console.log(err);
+        }
+      });
+    } else {
+      wx.showToast({
+        title: '请勿频繁操作',
+        image: '/imgs/alert.png',
+        duration: 1000
+      })
+    }
+
   },
 
   moneyItv: function () {
