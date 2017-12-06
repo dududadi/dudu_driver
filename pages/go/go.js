@@ -357,8 +357,8 @@ Page({
               {
                 iconPath: "../../imgs/marker_checked.png",
                 id: 1,
-                latitude: res.latitude,
-                longitude: res.longitude,
+                latitude: _this.data.eLatitude,
+                longitude: _this.data.eLongitude,
                 width: 23,
                 height: 33
               }
