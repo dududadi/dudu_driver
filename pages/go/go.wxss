@@ -25,7 +25,7 @@
 }
 .map_container{
   position: absolute;
-  bottom: 360px;
+  bottom: 60px;
   left: 0;
   right: 0;
 }
