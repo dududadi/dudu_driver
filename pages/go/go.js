@@ -40,7 +40,7 @@ Page({
     second: 2000,
     confirmBtnStyle: 'receive-now',
     size: '36',
-    dpr: '',
+    rate: '',
     wordsContentW: '',
     wordsCount: '',
     margin: '',
@@ -53,110 +53,6 @@ Page({
     sec: 0 //用于控制每五秒发送一次位置信息
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    console.log(options);
-    var _this = this;
-    this.setData({
-      user_openid: options.user_openid,
-      sSite: options.sSite,
-      sName: options.sName,
-      sLongitude: options.sLongitude,
-      sLatitude: options.sLatitude,
-      eSite: options.eSite,
-      eName: options.eName,
-      eLongitude: options.eLongitude,
-      eLatitude: options.eLatitude,
-      driv_longitude: options.driv_longitude,
-      driv_latitude: options.driv_latitude,
-      driv_location: options.driv_longitude + ',' + options.driv_latitude,
-      markers: [
-        {
-          iconPath: "../../imgs/marker_checked.png",
-          id: 1,
-          latitude: this.data.user_latitude,
-          longitude: this.data.user_longitude,
-          width: 23,
-          height: 33
-        }
-      ]
-    });
-
-    wx.getSystemInfo({
-      success: function(res) {
-        var screenW = res.windowWidth; //窗口可使用宽度
-        var dpr = res.pixelRatio; //设备像素比
-        var wordsCount = parseInt(screenW*dpr/_this.data.size);
-        var wordsContentW = wordsCount*_this.data.size/dpr;
-        var remain = (screenW - wordsContentW)/2;
-        console.log(wordsCount,wordsContentW);
-        _this.setData({
-          wordsContentW: wordsContentW,
-          dpr: dpr,
-          wordsCount: wordsCount,
-          margin: remain + 'px'
-        });
-      }
-    });
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-    var _this = this;
-    this.getAllLocation();
-    this.startItv();
-    setTimeout(function(){
-      _this.setData({
-        confirm_show: 'block'
-      });
-    },1200);
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    this.stopItv();
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  },
 
   //获取当前司机位置
   getDriverLocation: function () {
@@ -296,7 +192,7 @@ Page({
           }
         }
         var words = data.paths[0].steps[0].instruction;
-        if (words.length > _this.data.wordsCount ) {
+        if (words.length > _this.data.wordsCount) {
           _this.setData({
             pathTip_show: 'none',
             guideInfoHeight: '60px'
@@ -588,6 +484,128 @@ Page({
         console.log(err);
       }
     });
+  },
+
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    console.log(options);
+    var _this = this;
+    this.setData({
+      user_openid: options.user_openid,
+      sSite: options.sSite,
+      sName: options.sName,
+      sLongitude: options.sLongitude,
+      sLatitude: options.sLatitude,
+      eSite: options.eSite,
+      eName: options.eName,
+      eLongitude: options.eLongitude,
+      eLatitude: options.eLatitude,
+      driv_longitude: options.driv_longitude,
+      driv_latitude: options.driv_latitude,
+      driv_location: options.driv_longitude + ',' + options.driv_latitude,
+      markers: [
+        {
+          iconPath: "../../imgs/marker_checked.png",
+          id: 1,
+          latitude: this.data.user_latitude,
+          longitude: this.data.user_longitude,
+          width: 23,
+          height: 33
+        }
+      ]
+    });
+
+    wx.getSystemInfo({
+      success: function(res) {
+        var screenW = res.windowWidth; //窗口可使用宽度
+        var rate = _this.myToFixed(screenW/750,2);
+        var wordsCount = parseInt(screenW/parseInt(_this.data.size*rate));
+        var wordsContentW = Math.ceil(wordsCount*_this.data.size*rate);
+        if (remain > 0) {
+          var remain = (screenW - wordsContentW)/2;
+        } else {
+          var remain = 0;
+        };
+        _this.setData({
+          wordsContentW: wordsContentW,
+          rate: rate,
+          wordsCount: wordsCount,
+          margin: remain + 'px'
+        });
+      }
+    });
+  },
+
+
+  //保留n位小数（四舍五入）
+  myToFixed:function (num,n){
+    var num = String(num.toFixed(n+1));
+    var idx = num.indexOf('.');
+    if(n == 0){
+      num = num.substring(0,idx);
+    }else{
+      num = num.substring(0,idx+1+n);
+    }
+    return num;
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    var _this = this;
+    this.getAllLocation();
+    this.startItv();
+    setTimeout(function(){
+      _this.setData({
+        confirm_show: 'block'
+      });
+    },1200);
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+    this.stopItv();
+  },
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh: function () {
+
+  },
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+
+  },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
   }
 
 })

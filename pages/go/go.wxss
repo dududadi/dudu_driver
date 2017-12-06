@@ -9,7 +9,7 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  font-size: 37.5rpx;
+  font-size: 36rpx;
   flex-direction: column;
   text-align: center;
 }
@@ -19,6 +19,7 @@
   height: 30px;
   line-height: 30px;
   color: #E67F02;
+  font-size: 36rpx;
 }
 .flex-style view{
   height: 30px;
