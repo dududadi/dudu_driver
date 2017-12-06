@@ -61,7 +61,7 @@ Page({
       method: "POST",
       success: function (res) {
         console.log(res);
-        if(res=1)
+        if(res==1)
         {
           wx.showModal({
             title: '提示',
