@@ -1,7 +1,6 @@
 <!--receive_order.wxml-->
 <view class="content" style="height:100%">
   <view class="content-top">
-    <view>今日已接订单 <text>XXX</text></view>
     <button class="refresh-btn"catchtap="getOrders">刷新订单信息</button>
   </view>
   <view class="content-bottom">

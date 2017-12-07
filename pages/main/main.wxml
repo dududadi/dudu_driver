@@ -29,10 +29,10 @@
   <view class="section">
     <text class="section-title">联系我们</text>
     <view class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
-      <contact-button session-from="weapp">
-        <text class="iconfont icon-kefu"></text>
-        <text>客服</text>
-      </contact-button>
+      <text class="iconfont icon-kefu"></text>
+      <text>客服</text>
+      <button style="height: 100%;width: 100%;position: absolute;top: 0;left: 0;background-color:rgba(0,0,0,0);border: 0;border-radius: 0;" open-type="contact">
+      </button>
     </view>
     <view bindtap="suggest" class="item" style="width:{{itemW}};height:{{itemW}};line-height:{{itemH}}">
       <text class="iconfont icon-suggest"></text>
